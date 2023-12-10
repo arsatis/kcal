@@ -1,15 +1,11 @@
-import './App.css';
+import CalendarApp from './components/calendar/CalendarApp';
 
-import Header from './components/Header';
-import Main from './components/Main';
-import Sidebar from './components/Sidebar';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Header className="App-header" />
-      <Main />
-      <Sidebar />
+      <CalendarApp />
     </div>
   );
 }
