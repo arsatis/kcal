@@ -1,4 +1,4 @@
-const Calendar = ({ selectedDate, onDateClick, events }) => {
+function Calendar({ selectedDate, onDateClick, events }) {
   const daysInMonth = new Date(
     selectedDate.getFullYear(),
     selectedDate.getMonth() + 1,

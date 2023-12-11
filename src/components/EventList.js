@@ -1,4 +1,4 @@
-const EventList = ({ events, onDeleteEvent }) => {
+function EventList({ events, onDeleteEvent }) {
   return (
     <div className="event-list">
       <h2>Events</h2>

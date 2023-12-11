@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const EventForm = ({ onEventAdd }) => {
+function EventForm({ onEventAdd }) {
   const [title, setTitle] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -35,7 +35,7 @@ const EventForm = ({ onEventAdd }) => {
     <div className="event-form">
       <input
         type="text"
-        placeholder="Event title"
+        placeholder="Event name"
         value={title}
         onChange={handleTitleChange}
         onKeyPress={handleKeyPress}
