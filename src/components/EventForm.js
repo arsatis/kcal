@@ -25,7 +25,7 @@ function EventForm({ onEventAdd }) {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
       handleAddEvent();
     }
@@ -38,13 +38,12 @@ function EventForm({ onEventAdd }) {
         placeholder="Event name"
         value={title}
         onChange={handleTitleChange}
-        onKeyPress={handleKeyPress}
+        onKeyUp={handleKeyUp}
       />
       <input
         type="date"
         value={selectedDate}
         onChange={handleDateChange}
-        onKeyPress={handleKeyPress}
       />
       <button onClick={handleAddEvent}>Add Event</button>
     </div>
