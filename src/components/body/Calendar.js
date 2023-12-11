@@ -35,9 +35,9 @@ function CalendarHeader({ selectedDate, onDateClick }) {
 
   return (
     <div className="calendar-header">
-      <button className="nav-button" onClick={() => navigateMonth(-1)}>&lt;</button>
+      <button className="calendar-nav-button" onClick={() => navigateMonth(-1)}>&lt;</button>
       <span>{`${month} ${year}`}</span>
-      <button className="nav-button" onClick={() => navigateMonth(1)}>&gt;</button>
+      <button className="calendar-nav-button" onClick={() => navigateMonth(1)}>&gt;</button>
     </div>
   );
 }

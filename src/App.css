@@ -1,14 +1,13 @@
 /* Base Styles */
 
-.full-width-container {
-  width: 100%;
+.page {
+  max-width: 1200px;
+  padding: 0 8px;
+  margin: 20px auto;
 }
 
 .app-container {
   display: flex;
-  max-width: 1200px;
-  padding: 0 8px;
-  margin: 20px auto;
 }
 
 /* Button Styles */
@@ -26,11 +25,24 @@ button:hover {
   background-color: #b8860b; /* Darker brown on hover */
 }
 
-.nav-button {
-  margin: 0 8px;
+/* Header Styles */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0 8px 0 0;
 }
 
 /* Calendar Styles */
+
+.full-width-container {
+  width: 100%;
+}
 
 .calendar-container {
   width: 70%;
@@ -43,10 +55,16 @@ button:hover {
 }
 
 .calendar-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 8px;
   background-color: #f0f0f0;
   font-weight: bold;
+}
+
+.calendar-nav-button {
+  margin: 0 8px;
 }
 
 .days-of-week {
@@ -73,19 +91,6 @@ button:hover {
   background-color: #e6e6e6;
 }
 
-/* Header Styles */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.header h1 {
-  margin: 0;
-}
-
 /* Event Form Styles */
 
 .event-form {
@@ -98,6 +103,10 @@ input {
 }
 
 /* Event List Styles */
+
+.zero-width-container {
+  width: 0%;
+}
 
 .event-list-container {
   width: 30%;
