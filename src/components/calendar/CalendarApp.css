@@ -1,13 +1,61 @@
-.calendar {
-  display: grid;
-  gap: 8px;
-}
+/* Base Styles */
 
 .header {
   text-align: center;
   padding: 8px;
   background-color: #f0f0f0;
   font-weight: bold;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* Button Styles */
+
+button {
+  padding: 8px;
+  background-color: #d2b48c; /* Light brown */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #b8860b; /* Darker brown on hover */
+}
+
+.nav-button {
+  margin: 0 8px;
+}
+
+/* Calendar Styles */
+
+.calendar-container {
+  width: 70%;
+  margin-right: 20px;
+}
+
+.calendar {
+  display: grid;
+  gap: 8px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-header h1 {
+  margin: 0;
 }
 
 .days-of-week {
@@ -34,6 +82,8 @@
   background-color: #e6e6e6;
 }
 
+/* Event Form Styles */
+
 .event-form {
   margin-top: 20px;
 }
@@ -43,47 +93,7 @@ input {
   margin-right: 8px;
 }
 
-button {
-  padding: 8px;
-  background-color: #d2b48c; /* Light brown color */
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #b8860b; /* Darker brown color on hover */
-}
-
-.nav-button {
-  margin: 0 8px;
-}
-
-.app-container {
-  display: flex;
-  max-width: 1200px;
-  margin: 20px auto;
-}
-
-.full-width {
-  width: 100%; /* Set the width to 100% when event list is hidden */
-}
-
-.calendar-container {
-  width: 70%;
-  margin-right: 20px;
-}
-
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.calendar-header h1 {
-  margin: 0;
-}
+/* Event List Styles */
 
 .event-list-container {
   width: 30%;
@@ -117,24 +127,13 @@ button:hover {
   align-items: center;
 }
 
-.event-date {
-  font-size: 12px;
-  margin-right: 8px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: default;
-  padding: 5px 10px; /* Adjust padding here */
-  width: fit-content; /* Set width to fit the content */
-}
-
 .event-list span {
   text-align: left;
-  flex-grow: 1; /* Allow the span to grow and take up the available space */
+  flex-grow: 1;
 }
 
 .event-list button {
-  margin-left: auto; /* Push the button to the right */
+  margin-left: auto;
 }
 
 .event {
@@ -142,4 +141,15 @@ button:hover {
   color: white;
   padding: 4px;
   margin-top: 4px;
+}
+
+.event-date {
+  font-size: 12px;
+  margin-right: 8px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: default;
+  padding: 5px 10px;
+  width: fit-content;
 }
