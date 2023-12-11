@@ -8,17 +8,9 @@ import './App.css'
 function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const [isEventListVisible, setEventListVisible] = useState(true);
-
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleEventAdd = (event) => {
-    setEvents([...events, event]);
-  };
+  const [isEventListVisible, setEventListVisibility] = useState(true);
   
-  const handleDeleteEvent = (eventId) => {
+  const handleEventDelete = (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
     setEvents(updatedEvents);
   };
@@ -28,20 +20,22 @@ function App() {
       <div className={isEventListVisible ? "calendar-container" : "full-width-container"}>
         <Header
           isEventListVisible={isEventListVisible}
-          setEventListVisible={setEventListVisible}
+          setEventListVisibility={setEventListVisibility}
         />
         <Calendar
           selectedDate={selectedDate}
-          onDateClick={handleDateClick}
+          onDateClick={(date) => setSelectedDate(date)}
           events={events}
         />
-        <EventForm onEventAdd={handleEventAdd} />
+        <EventForm
+          onEventAdd={(event) => setEvents([...events, event])}
+        />
       </div>
       {isEventListVisible && (
         <div className="event-list-container">
           <EventList
             events={events}
-            onDeleteEvent={handleDeleteEvent}
+            onEventDelete={handleEventDelete}
           />
         </div>
       )}

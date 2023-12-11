@@ -1,4 +1,62 @@
 function Calendar({ selectedDate, onDateClick, events }) {
+  return (
+    <div className="calendar">
+      <CalendarHeader selectedDate={selectedDate} onDateClick={onDateClick} />
+      <DaysOfWeek />
+      <CalendarDays selectedDate={selectedDate} onDateClick={onDateClick} events={events} />
+    </div>
+  );
+}
+
+function CalendarHeader({ selectedDate, onDateClick }) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const month = monthNames[selectedDate.getMonth()];
+  const year = selectedDate.getFullYear();
+
+  const navigateMonth = (step) => {
+    const newDate = new Date(selectedDate);
+    newDate.setMonth(selectedDate.getMonth() + step);
+    onDateClick(newDate);
+  };
+
+  return (
+    <div className="calendar-header">
+      <button className="nav-button" onClick={() => navigateMonth(-1)}>&lt;</button>
+      <span>{`${month} ${year}`}</span>
+      <button className="nav-button" onClick={() => navigateMonth(1)}>&gt;</button>
+    </div>
+  );
+}
+
+function DaysOfWeek() {
+  return (
+    <div className="days-of-week">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
+  );
+}
+
+function CalendarDays({ selectedDate, onDateClick, events }) {
   const daysInMonth = new Date(
     selectedDate.getFullYear(),
     selectedDate.getMonth() + 1,
@@ -43,59 +101,9 @@ function Calendar({ selectedDate, onDateClick, events }) {
     return days;
   };
 
-  const renderHeader = () => {
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-
-    const month = monthNames[selectedDate.getMonth()];
-    const year = selectedDate.getFullYear();
-
-    return (
-      <div className="calendar-header">
-        <button className="nav-button" onClick={() => navigateMonth(-1)}>
-          &lt;
-        </button>
-        <span>{`${month} ${year}`}</span>
-        <button className="nav-button" onClick={() => navigateMonth(1)}>
-          &gt;
-        </button>
-      </div>
-    );
-  };
-
-  const navigateMonth = (step) => {
-    const newDate = new Date(selectedDate);
-    newDate.setMonth(selectedDate.getMonth() + step);
-    onDateClick(newDate);
-  };
-
   return (
-    <div className="calendar">
-      {renderHeader()}
-      <div className="days-of-week">
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-      </div>
-      <div className="days">{renderDays()}</div>
-    </div>
+    <div className="days">{renderDays()}</div>
   );
-};
+}
 
 export default Calendar;

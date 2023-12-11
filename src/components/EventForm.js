@@ -4,14 +4,6 @@ function EventForm({ onEventAdd }) {
   const [title, setTitle] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-  };
-
   const handleAddEvent = () => {
     if (title.trim() !== '' && selectedDate !== '') {
       const newEvent = {
@@ -37,17 +29,17 @@ function EventForm({ onEventAdd }) {
         type="text"
         placeholder="Event name"
         value={title}
-        onChange={handleTitleChange}
+        onChange={(e) => setTitle(e.target.value)}
         onKeyUp={handleKeyUp}
       />
       <input
         type="date"
         value={selectedDate}
-        onChange={handleDateChange}
+        onChange={(e) => setSelectedDate(e.target.value)}
       />
       <button onClick={handleAddEvent}>Add Event</button>
     </div>
   );
-};
+}
 
 export default EventForm;
