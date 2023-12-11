@@ -1,33 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Calendar from './components/Calendar';
+import EventForm from './components/EventForm';
+import EventList from './components/EventList';
+import Header from './components/Header';
+import './App.css'
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
+  const [isEventListVisible, setEventListVisible] = useState(true);
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleEventAdd = (event) => {
+    setEvents([...events, event]);
+  };
+  
+  const handleDeleteEvent = (eventId) => {
+    const updatedEvents = events.filter((event) => event.id !== eventId);
+    setEvents(updatedEvents);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Heading />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <div className={isEventListVisible ? "calendar-container" : "full-width-container"}>
+        <Header
+          isEventListVisible={isEventListVisible}
+          setEventListVisible={setEventListVisible}
+        />
+        <Calendar
+          selectedDate={selectedDate}
+          onDateClick={handleDateClick}
+          events={events}
+        />
+        <EventForm onEventAdd={handleEventAdd} />
+      </div>
+      {isEventListVisible && (
+        <div className="event-list-container">
+          <EventList
+            events={events}
+            onDeleteEvent={handleDeleteEvent}
+          />
+        </div>
+      )}
     </div>
   );
-}
-
-function Heading() {
-  let title = "hello world"
-  return (
-    <h1>{title}</h1>
-  )
 }
 
 export default App;

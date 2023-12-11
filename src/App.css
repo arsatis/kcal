@@ -1,38 +1,185 @@
-.App {
+/* Base Styles */
+
+.full-width-container {
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  max-width: 1200px;
+  padding: 0 8px;
+  margin: 20px auto;
+}
+
+/* Button Styles */
+
+button {
+  padding: 8px;
+  background-color: #d2b48c; /* Light brown */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #b8860b; /* Darker brown on hover */
+}
+
+.nav-button {
+  margin: 0 8px;
+}
+
+/* Calendar Styles */
+
+.calendar-container {
+  width: 70%;
+  margin-right: 20px;
+}
+
+.calendar {
+  display: grid;
+  gap: 8px;
+}
+
+.calendar-header {
+  text-align: center;
+  padding: 8px;
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.days-of-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.day.active:hover {
+  background-color: #e6e6e6;
+}
+
+/* Header Styles */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+/* Event Form Styles */
+
+.event-form {
+  margin-top: 20px;
+}
+
+input {
+  padding: 8px;
+  margin-right: 8px;
+}
+
+/* Event List Styles */
+
+.event-list-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-list-container button {
+  margin-bottom: 0px;
+}
+
+.event-list {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.event-list h2 {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.event-list ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.event-list li {
+  margin-bottom: 8px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.event-list span {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.event-list button {
+  margin-left: auto;
+  text-align: center;
+}
+
+.event {
+  background-color: #d2b48c;
   color: white;
+  padding: 4px;
+  margin-top: 4px;
 }
 
-.App-link {
-  color: #61dafb;
+.event-date {
+  display: inline-block;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 25%;
+  margin-right: 8px;
+  padding: 5px 5px;
+  font-size: 12px;
+  text-align: center;
+  cursor: default;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.event-title {
+  margin-right: 8px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .event-date {
+    font-size: 10px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .event-title {
+    font-size: 12px;
+  }
+
+  .event-list h2 {
+    font-size: 20px;
+  }
+
+  .event-list button {
+    font-size: 12px;
   }
 }
