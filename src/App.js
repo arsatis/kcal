@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className={isEventListVisible ? "calendar-container" : "full-width"}>
+      <div className={isEventListVisible ? "calendar-container" : "full-width-container"}>
         <Header
           isEventListVisible={isEventListVisible}
           setEventListVisible={setEventListVisible}

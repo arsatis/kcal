@@ -31,10 +31,7 @@ function Calendar({ selectedDate, onDateClick, events }) {
           {date > 0 ? date : ''}
           {events.map((event) => {
             const eventDate = new Date(event.date);
-            if (
-              eventDate.toDateString() === currentDate.toDateString() &&
-              date > 0
-            ) {
+            if (eventDate.toDateString() === currentDate.toDateString() && date > 0) {
               return <div key={event.id} className="event">{event.title}</div>;
             }
             return null;
@@ -66,7 +63,7 @@ function Calendar({ selectedDate, onDateClick, events }) {
     const year = selectedDate.getFullYear();
 
     return (
-      <div className="header">
+      <div className="calendar-header">
         <button className="nav-button" onClick={() => navigateMonth(-1)}>
           &lt;
         </button>

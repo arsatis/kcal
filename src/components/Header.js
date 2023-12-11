@@ -4,7 +4,7 @@ function Header({ isEventListVisible, setEventListVisible }) {
   };
 
   return (
-    <div className="calendar-header">
+    <div className="header">
       <h1>kcal</h1>
       <p>(note: the data is not yet persistent)</p>
       <button onClick={toggleEventListVisibility}>
