@@ -1,6 +1,6 @@
 {
-  "name": "proj",
-  "version": "0.1.0",
+  "name": "kcal",
+  "version": "0.0.1",
   "homepage": "https://arsatis.github.io/kcal",
   "private": true,
   "dependencies": {
