@@ -2,6 +2,8 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { UserContext } from '../providers/UserProvider';
+import sha256 from 'crypto-js/sha256';
+import { v4 as randomStr } from 'uuid';
 
 function Login({ setAuthenticated }) {
   const [name, setName] = useState('');
@@ -16,11 +18,17 @@ function Login({ setAuthenticated }) {
     }
 
     const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('name', '==', name), where('password', '==', password)) // TODO: compare hashed passwords
+    const q = query(usersRef, where('name', '==', name))
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.size === 0) {
-      alert('User does not exist or password is incorrect.');
+      alert('User does not exist.');
+      return;
+    }
+    const userDetails = querySnapshot.docs[0].data();
+    const passwordHash = sha256(password + userDetails.salt).words;
+    if (userDetails.password.some((v, i) => v !== passwordHash[i])) {
+      alert('Incorrect password.');
       return;
     }
     console.log('User', name, 'has logged in.');
@@ -47,10 +55,11 @@ function Login({ setAuthenticated }) {
     }
 
     try {
+      const salt = randomStr().substring(0, 8);
       await addDoc(collection(db, 'users'), {
         name: name,
-        password: password, // TODO: write password after hashing
-        salt: '' // TODO: add random salt
+        password: sha256(password + salt).words,
+        salt: salt
       });
       console.log('User', name, 'has logged in.');
 
@@ -58,7 +67,8 @@ function Login({ setAuthenticated }) {
       setAuthenticated(true);
       navigate('/kcal');
     } catch (e) {
-      alert('Error adding document: ', e);
+      alert('There was an error during sign up. Please try again.');
+      console.error('Error adding document: ', e);
     }
   };
 
