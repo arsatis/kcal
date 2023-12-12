@@ -74,7 +74,7 @@ function Login({ setAuthenticated }) {
         <h2>Login</h2>
         <form>
           <div className='login-items'>
-            <label className='login-label'>User:</label>
+            <label className='login-label'>Username:</label>
             <input
               type='text'
               value={name}
