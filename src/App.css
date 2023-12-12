@@ -56,8 +56,15 @@ button:hover {
   margin: 0 8px;
 }
 
+.login-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
 .login-button {
-  margin-top: 8px;
+  margin: 0 8px;
 }
 
 /* Header Styles */
