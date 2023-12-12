@@ -1,68 +1,60 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { initializeApp } from 'firebase/app';
-import { addDoc, collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { UserContext } from '../providers/UserProvider';
 
 function Login({ setAuthenticated }) {
-  const [user, setUser] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
-  // TODO: shift this logic for initializing Firestore into a React Context
-  const firebaseConfig = {
-    apiKey: 'AIzaSyDC_OOByj0zCcJEgYraBNTo_ItEq_tYOlY',
-    authDomain: 'kcal-arsatis.firebaseapp.com',
-    projectId: 'kcal-arsatis',
-    storageBucket: 'kcal-arsatis.appspot.com',
-    messagingSenderId: '69806283894',
-    appId: '1:69806283894:web:c2443945966740e3e31357',
-    measurementId: 'G-0J39BNLT7C'
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const { db, setUser } = useContext(UserContext);
 
   const handleLogin = async () => {
-    if (user === '' || password === '') {
+    if (name === '' || password === '') {
       alert('Username or password field is empty');
       return;
     }
 
     const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('name', '==', user), where('password', '==', password)) // TODO: compare hashed passwords
+    const q = query(usersRef, where('name', '==', name), where('password', '==', password)) // TODO: compare hashed passwords
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.size === 0) {
       alert('User does not exist or password is incorrect.');
       return;
     }
+    console.log('User', name, 'has logged in.');
 
+    setUser(name);
     setAuthenticated(true);
     navigate('/kcal');
   };
 
   const handleSignup = async () => {
-    if (user === '' || password === '') {
+    if (name === '' || password === '') {
       alert('Username or password field is empty');
       return;
     }
 
     // ensure that user does not already exist
     const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('name', '==', user));
+    const q = query(usersRef, where('name', '==', name));
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.size !== 0) {
-      alert('User with the given username already exists.');
+      alert('User with the given name already exists.');
       return;
     }
 
     try {
       await addDoc(collection(db, 'users'), {
-        name: user,
+        name: name,
         password: password, // TODO: write password after hashing
         salt: '' // TODO: add random salt
       });
-      console.log('User', user, 'has logged in.');
+      console.log('User', name, 'has logged in.');
+
+      setUser(name);
       setAuthenticated(true);
       navigate('/kcal');
     } catch (e) {
@@ -85,8 +77,8 @@ function Login({ setAuthenticated }) {
             <label className='login-label'>User:</label>
             <input
               type='text'
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               onKeyUp={handleKeyUp}
             />
           </div>
