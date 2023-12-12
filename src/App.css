@@ -1,14 +1,13 @@
 /* Base Styles */
 
-.full-width-container {
-  width: 100%;
+.page {
+  max-width: 1200px;
+  padding: 0 8px;
+  margin: 20px auto;
 }
 
 .app-container {
   display: flex;
-  max-width: 1200px;
-  padding: 0 8px;
-  margin: 20px auto;
 }
 
 /* Button Styles */
@@ -26,11 +25,66 @@ button:hover {
   background-color: #b8860b; /* Darker brown on hover */
 }
 
-.nav-button {
+/* Login Page Styles */
+
+.login-page {
+  max-width: 1200px;
+  padding: 0 8px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.login-form {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  background-color: #f9f9f9;
+  width: 20%;
+  min-width: 270px;
+  margin: auto;
+  padding: 10px;
+}
+
+.login-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.login-label {
   margin: 0 8px;
 }
 
+.login-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.login-button {
+  margin: 0 8px;
+}
+
+/* Header Styles */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0 8px 0 0;
+}
+
 /* Calendar Styles */
+
+.full-width-container {
+  width: 100%;
+}
 
 .calendar-container {
   width: 70%;
@@ -43,10 +97,16 @@ button:hover {
 }
 
 .calendar-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 8px;
   background-color: #f0f0f0;
   font-weight: bold;
+}
+
+.calendar-nav-button {
+  margin: 0 8px;
 }
 
 .days-of-week {
@@ -73,19 +133,6 @@ button:hover {
   background-color: #e6e6e6;
 }
 
-/* Header Styles */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.header h1 {
-  margin: 0;
-}
-
 /* Event Form Styles */
 
 .event-form {
@@ -98,6 +145,10 @@ input {
 }
 
 /* Event List Styles */
+
+.zero-width-container {
+  width: 0%;
+}
 
 .event-list-container {
   width: 30%;

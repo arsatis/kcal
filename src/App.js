@@ -1,50 +1,38 @@
 import { useState } from 'react';
-import Calendar from './components/Calendar';
-import EventForm from './components/EventForm';
-import EventList from './components/EventList';
+import { Route, Routes } from 'react-router-dom';
+import Body from './components/Body';
 import Header from './components/Header';
+import Login from './components/Login';
+import UserProvider from './providers/UserProvider';
 import './App.css'
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [events, setEvents] = useState([]);
-  const [isEventListVisible, setEventListVisible] = useState(true);
-
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleEventAdd = (event) => {
-    setEvents([...events, event]);
-  };
+  const [isAuthenticated, setAuthenticated] = useState(false);
   
-  const handleDeleteEvent = (eventId) => {
-    const updatedEvents = events.filter((event) => event.id !== eventId);
-    setEvents(updatedEvents);
-  };
+  return (
+    <UserProvider>
+      <Routes>
+        <Route path='/kcal' element={
+          isAuthenticated ? <Homepage /> : <Login setAuthenticated={setAuthenticated} />
+        } />
+        <Route path='/kcal/login' element={<Login setAuthenticated={setAuthenticated} />} />
+      </Routes>
+    </UserProvider>
+  );
+}
+
+function Homepage() {
+  const [isEventListVisible, setEventListVisibility] = useState(true);
 
   return (
-    <div className="app-container">
-      <div className={isEventListVisible ? "calendar-container" : "full-width-container"}>
-        <Header
-          isEventListVisible={isEventListVisible}
-          setEventListVisible={setEventListVisible}
-        />
-        <Calendar
-          selectedDate={selectedDate}
-          onDateClick={handleDateClick}
-          events={events}
-        />
-        <EventForm onEventAdd={handleEventAdd} />
-      </div>
-      {isEventListVisible && (
-        <div className="event-list-container">
-          <EventList
-            events={events}
-            onDeleteEvent={handleDeleteEvent}
-          />
-        </div>
-      )}
+    <div className='page'>
+      <Header
+        isEventListVisible={isEventListVisible}
+        setEventListVisibility={setEventListVisibility}
+      />
+      <Body
+        isEventListVisible={isEventListVisible}
+      />
     </div>
   );
 }
