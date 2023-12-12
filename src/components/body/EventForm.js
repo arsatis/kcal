@@ -24,16 +24,16 @@ function EventForm({ onEventAdd }) {
   };
 
   return (
-    <div className="event-form">
+    <div className='event-form'>
       <input
-        type="text"
-        placeholder="Event name"
+        type='text'
+        placeholder='Event name'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyUp={handleKeyUp}
       />
       <input
-        type="date"
+        type='date'
         value={selectedDate}
         onChange={(e) => setSelectedDate(e.target.value)}
       />

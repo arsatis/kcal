@@ -25,6 +25,41 @@ button:hover {
   background-color: #b8860b; /* Darker brown on hover */
 }
 
+/* Login Page Styles */
+
+.login-page {
+  max-width: 1200px;
+  padding: 0 8px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.login-form {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  background-color: #f9f9f9;
+  width: 20%;
+  min-width: 260px;
+  margin: auto;
+  padding: 10px;
+}
+
+.login-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.login-label {
+  margin: 0 8px;
+}
+
+.login-button {
+  margin-top: 8px;
+}
+
 /* Header Styles */
 
 .header {

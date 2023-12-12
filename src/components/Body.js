@@ -13,8 +13,8 @@ function Body({ isEventListVisible }) {
   };
 
   return (
-    <div className="app-container">
-      <div className={isEventListVisible ? "calendar-container" : "full-width-container"}>
+    <div className='app-container'>
+      <div className={isEventListVisible ? 'calendar-container' : 'full-width-container'}>
         <Calendar
           selectedDate={selectedDate}
           onDateClick={(date) => setSelectedDate(date)}
@@ -24,7 +24,7 @@ function Body({ isEventListVisible }) {
           onEventAdd={(event) => setEvents([...events, event])}
         />
       </div>
-      <div className={isEventListVisible ? "event-list-container" : "zero-width-container"}>
+      <div className={isEventListVisible ? 'event-list-container' : 'zero-width-container'}>
         {isEventListVisible && <EventList
           events={events}
           onEventDelete={handleEventDelete}

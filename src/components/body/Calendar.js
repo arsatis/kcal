@@ -1,6 +1,6 @@
 function Calendar({ selectedDate, onDateClick, events }) {
   return (
-    <div className="calendar">
+    <div className='calendar'>
       <CalendarHeader selectedDate={selectedDate} onDateClick={onDateClick} />
       <DaysOfWeek />
       <CalendarDays selectedDate={selectedDate} onDateClick={onDateClick} events={events} />
@@ -34,17 +34,17 @@ function CalendarHeader({ selectedDate, onDateClick }) {
   };
 
   return (
-    <div className="calendar-header">
-      <button className="calendar-nav-button" onClick={() => navigateMonth(-1)}>&lt;</button>
+    <div className='calendar-header'>
+      <button className='calendar-nav-button' onClick={() => navigateMonth(-1)}>&lt;</button>
       <span>{`${month} ${year}`}</span>
-      <button className="calendar-nav-button" onClick={() => navigateMonth(1)}>&gt;</button>
+      <button className='calendar-nav-button' onClick={() => navigateMonth(1)}>&gt;</button>
     </div>
   );
 }
 
 function DaysOfWeek() {
   return (
-    <div className="days-of-week">
+    <div className='days-of-week'>
       <div>Sun</div>
       <div>Mon</div>
       <div>Tue</div>
@@ -90,7 +90,7 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
           {events.map((event) => {
             const eventDate = new Date(event.date);
             if (eventDate.toDateString() === currentDate.toDateString() && date > 0) {
-              return <div key={event.id} className="event">{event.title}</div>;
+              return <div key={event.id} className='event'>{event.title}</div>;
             }
             return null;
           })}
@@ -102,7 +102,7 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
   };
 
   return (
-    <div className="days">{renderDays()}</div>
+    <div className='days'>{renderDays()}</div>
   );
 }
 
