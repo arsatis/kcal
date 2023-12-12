@@ -25,11 +25,10 @@ function Body({ isEventListVisible }) {
         />
       </div>
       <div className={isEventListVisible ? "event-list-container" : "zero-width-container"}>
-        <EventList
+        {isEventListVisible && <EventList
           events={events}
           onEventDelete={handleEventDelete}
-          isEventListVisible={isEventListVisible}
-        />
+        />}
       </div>
     </div>
   );

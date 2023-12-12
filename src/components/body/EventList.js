@@ -1,7 +1,4 @@
-function EventList({ events, onEventDelete, isEventListVisible }) {
-  if (!isEventListVisible) {
-    return null;
-  }
+function EventList({ events, onEventDelete }) {
   return (
     <div className="event-list">
       <h2>Events</h2>
