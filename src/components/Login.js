@@ -81,7 +81,7 @@ function Login({ setAuthenticated }) {
   return (
     <div className='login-page'>
       <div className='login-form'>
-        <h2>Login</h2>
+        <h2>kcal</h2>
         <form>
           <div className='login-items'>
             <label className='login-label'>Username:</label>
