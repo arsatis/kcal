@@ -88,9 +88,9 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
         >
           {date > 0 ? date : ''}
           {events.map((event) => {
-            const eventDate = new Date(event.date);
+            const eventDate = new Date(event.time);
             if (eventDate.toDateString() === currentDate.toDateString() && date > 0) {
-              return <div key={event.id} className='event'>{event.title}</div>;
+              return <div key={event.id} className='event'>{event.name}</div>;
             }
             return null;
           })}
