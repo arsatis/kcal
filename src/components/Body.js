@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
 import { UserContext } from '../providers/UserProvider';
+import { addEvent, deleteEvent, getEvents } from '../utils/eventUtils';
 
 function Body({ isEventListVisible }) {
-  const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const { db, user } = useContext(UserContext);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     async function updateEvents() {
@@ -17,10 +17,17 @@ function Body({ isEventListVisible }) {
     }
     updateEvents();
   }, [db, user]);
+
+  const handleEventAdd = (event) => {
+    setEvents([...events, event])
+    addEvent(db, user, event);
+  };
   
   const handleEventDelete = (eventId) => {
+    const event = events.filter((event) => event.id === eventId)[0];
     const updatedEvents = events.filter((event) => event.id !== eventId);
     setEvents(updatedEvents);
+    deleteEvent(db, user, event);
   };
 
   return (
@@ -32,7 +39,7 @@ function Body({ isEventListVisible }) {
           events={events}
         />
         <EventForm
-          onEventAdd={(event) => setEvents([...events, event])}
+          onEventAdd={handleEventAdd}
         />
       </div>
       <div className={isEventListVisible ? 'event-list-container' : 'zero-width-container'}>
@@ -43,25 +50,6 @@ function Body({ isEventListVisible }) {
       </div>
     </div>
   );
-}
-
-async function getEvents(db, user) {
-  const docRef = doc(db, 'events', user);
-  const docSnapshot = await getDoc(docRef);
-
-  if (docSnapshot.exists()) {
-    return docSnapshot.data().events;
-  }
-  try {
-    await setDoc(doc(db, 'events', user), {
-      user: user,
-      events: []
-    });
-  } catch (e) {
-    alert('There was an error with during user creation. Please log in again.');
-    console.error('Error creating events for user: ', e);
-  }
-  return [];
 }
 
 export default Body;

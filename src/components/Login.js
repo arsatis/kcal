@@ -6,10 +6,10 @@ import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
 function Login({ setAuthenticated }) {
+  const { db, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const { db, setUser } = useContext(UserContext);
 
   const handleLogin = async () => {
     if (name === '' || password === '') {
@@ -23,7 +23,7 @@ function Login({ setAuthenticated }) {
       alert('User does not exist.');
       return;
     }
-    
+
     const userDetails = docSnapshot.data();
     const passwordHash = sha256(password + userDetails.salt).words;
     if (userDetails.password.some((v, i) => v !== passwordHash[i])) {
