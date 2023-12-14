@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
@@ -16,8 +16,7 @@ function Body({ isEventListVisible }) {
       setEvents(events);
     }
     updateEvents();
-  }, []);
-  console.log(events);
+  }, [db, user]);
   
   const handleEventDelete = (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
@@ -47,15 +46,14 @@ function Body({ isEventListVisible }) {
 }
 
 async function getEvents(db, user) {
-  const eventsRef = collection(db, 'events');
-  const q = query(eventsRef, where('user', '==', user));
-  const querySnapshot = await getDocs(q);
+  const docRef = doc(db, 'events', user);
+  const docSnapshot = await getDoc(docRef);
 
-  if (querySnapshot.size !== 0) {
-    return querySnapshot.docs[0].data().events;
+  if (docSnapshot.exists()) {
+    return docSnapshot.data().events;
   }
   try {
-    await addDoc(collection(db, 'events'), {
+    await setDoc(doc(db, 'events', user), {
       user: user,
       events: []
     });
