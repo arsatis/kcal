@@ -24,7 +24,13 @@ function Body({ isEventListVisible }) {
   };
   
   const handleEventDelete = (eventId) => {
-    const event = events.filter((event) => event.id === eventId)[0];
+    const matchedEvents = events.filter((event) => event.id === eventId);
+    if (matchedEvents.length === 0) {
+      alert('Event to be deleted does not exist.');
+      return;
+    }
+    const event = matchedEvents[0];
+
     const updatedEvents = events.filter((event) => event.id !== eventId);
     setEvents(updatedEvents);
     deleteEvent(db, user, event);
