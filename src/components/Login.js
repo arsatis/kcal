@@ -1,15 +1,15 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../providers/UserProvider';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
 function Login({ setAuthenticated }) {
+  const { db, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const { db, setUser } = useContext(UserContext);
 
   const handleLogin = async () => {
     if (name === '' || password === '') {
@@ -17,15 +17,14 @@ function Login({ setAuthenticated }) {
       return;
     }
 
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('name', '==', name))
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.size === 0) {
+    const docRef = doc(db, 'users', name);
+    const docSnapshot = await getDoc(docRef);
+    if (!docSnapshot.exists()) {
       alert('User does not exist.');
       return;
     }
-    const userDetails = querySnapshot.docs[0].data();
+
+    const userDetails = docSnapshot.data();
     const passwordHash = sha256(password + userDetails.salt).words;
     if (userDetails.password.some((v, i) => v !== passwordHash[i])) {
       alert('Incorrect password.');
@@ -45,18 +44,16 @@ function Login({ setAuthenticated }) {
     }
 
     // ensure that user does not already exist
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('name', '==', name));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.size !== 0) {
+    const docRef = doc(db, 'users', name);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
       alert('User with the given name already exists.');
       return;
     }
 
     try {
       const salt = randomStr().substring(0, 8);
-      await addDoc(collection(db, 'users'), {
+      await setDoc(doc(db, 'users', name), {
         name: name,
         password: sha256(password + salt).words,
         salt: salt
@@ -81,7 +78,7 @@ function Login({ setAuthenticated }) {
   return (
     <div className='login-page'>
       <div className='login-form'>
-        <h2>Login</h2>
+        <h2>kcal</h2>
         <form>
           <div className='login-items'>
             <label className='login-label'>Username:</label>

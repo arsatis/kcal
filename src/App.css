@@ -14,7 +14,7 @@
 
 button {
   padding: 8px;
-  background-color: #d2b48c; /* Light brown */
+  background-color: #d2b48c;
   color: white;
   border: none;
   cursor: pointer;
@@ -22,7 +22,7 @@ button {
 }
 
 button:hover {
-  background-color: #b8860b; /* Darker brown on hover */
+  background-color: #b8860b;
 }
 
 /* Login Page Styles */
@@ -40,7 +40,7 @@ button:hover {
   border-radius: 16px;
   background-color: #f9f9f9;
   width: 20%;
-  min-width: 270px;
+  min-width: 290px;
   margin: auto;
   padding: 10px;
 }
