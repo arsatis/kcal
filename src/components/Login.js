@@ -1,12 +1,14 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../providers/UserProvider';
+import { padUserDetails } from '../utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
 function Login({ setAuthenticated }) {
-  const { db, setUser } = useContext(UserContext);
+  const { auth, db, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -32,9 +34,17 @@ function Login({ setAuthenticated }) {
     }
     console.log('User', name, 'has logged in.');
 
-    setUser(name);
-    setAuthenticated(true);
-    navigate('/kcal');
+    const [_name, _password] = padUserDetails(name, password);
+    signInWithEmailAndPassword(auth, _name, _password)
+      .then(() => {
+        setUser(_name);
+        setAuthenticated(true);
+        navigate('/kcal');
+      })
+      .catch((error) => {
+        alert('An error was encountered during sign in. Please try again.')
+        console.error(error);
+      });
   };
 
   const handleSignup = async () => {
@@ -60,12 +70,20 @@ function Login({ setAuthenticated }) {
       });
       console.log('User', name, 'has logged in.');
 
-      setUser(name);
-      setAuthenticated(true);
-      navigate('/kcal');
+      const [_name, _password] = padUserDetails(name, password);
+      createUserWithEmailAndPassword(auth, _name, _password)
+        .then(() => {
+          setUser(_name);
+          setAuthenticated(true);
+          navigate('/kcal');
+        })
+        .catch((error) => {
+          alert('An error was encountered during user creation. Please try again.')
+          console.error(error);
+        });
     } catch (e) {
       alert('There was an error during sign up. Please try again.');
-      console.error('Error adding document: ', e);
+      console.error('Error adding document:', e);
     }
   };
 

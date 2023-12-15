@@ -13,7 +13,7 @@ export async function getEvents(db, user) {
       events: []
     });
   } catch (e) {
-    alert('There was an error with during user creation. Please log in again.');
+    alert('There was an error during user creation. Please log in again.');
     console.error('Error creating events for user:', user, e);
   }
   return [];

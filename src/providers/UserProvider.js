@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 function UserProvider({ children }) {
@@ -16,9 +17,10 @@ function UserProvider({ children }) {
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
   return (
-    <UserContext.Provider value={{ db, user, setUser }}>
+    <UserContext.Provider value={{ auth, db, user, setUser }}>
       {children}
     </UserContext.Provider>
   )
