@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../providers/UserProvider';
-import { padUserDetails } from '../utils/loginUtils';
+import { isLoginValid, isSignUpValid, padUsername } from '../utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
@@ -14,28 +14,13 @@ function Login({ setAuthenticated }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (name === '' || password === '') {
-      alert('Username or password field is empty');
-      return;
-    }
-
-    const docRef = doc(db, 'users', name);
-    const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) {
-      alert('User does not exist.');
-      return;
-    }
-
-    const userDetails = docSnapshot.data();
-    const passwordHash = sha256(password + userDetails.salt).words;
-    if (userDetails.password.some((v, i) => v !== passwordHash[i])) {
-      alert('Incorrect password.');
+    if (!await isLoginValid(db, name, password)) {
       return;
     }
     console.log('User', name, 'has logged in.');
 
-    const [_name, _password] = padUserDetails(name, password);
-    signInWithEmailAndPassword(auth, _name, _password)
+    const _name = padUsername(name);
+    signInWithEmailAndPassword(auth, _name, password)
       .then(() => {
         setUser(_name);
         setAuthenticated(true);
@@ -48,19 +33,9 @@ function Login({ setAuthenticated }) {
   };
 
   const handleSignup = async () => {
-    if (name === '' || password === '') {
-      alert('Username or password field is empty');
+    if (!await isSignUpValid(db, name, password)) {
       return;
     }
-
-    // ensure that user does not already exist
-    const docRef = doc(db, 'users', name);
-    const docSnapshot = await getDoc(docRef);
-    if (docSnapshot.exists()) {
-      alert('User with the given name already exists.');
-      return;
-    }
-
     try {
       const salt = randomStr().substring(0, 8);
       await setDoc(doc(db, 'users', name), {
@@ -70,8 +45,8 @@ function Login({ setAuthenticated }) {
       });
       console.log('User', name, 'has logged in.');
 
-      const [_name, _password] = padUserDetails(name, password);
-      createUserWithEmailAndPassword(auth, _name, _password)
+      const _name = padUsername(name);
+      createUserWithEmailAndPassword(auth, _name, password)
         .then(() => {
           setUser(_name);
           setAuthenticated(true);
