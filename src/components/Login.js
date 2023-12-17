@@ -1,56 +1,41 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { UserContext } from '../providers/UserProvider';
+import { isLoginValid, isSignUpValid, padUsername } from '../utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
 function Login({ setAuthenticated }) {
-  const { db, setUser } = useContext(UserContext);
+  const { auth, db, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (name === '' || password === '') {
-      alert('Username or password field is empty');
-      return;
-    }
-
-    const docRef = doc(db, 'users', name);
-    const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) {
-      alert('User does not exist.');
-      return;
-    }
-
-    const userDetails = docSnapshot.data();
-    const passwordHash = sha256(password + userDetails.salt).words;
-    if (userDetails.password.some((v, i) => v !== passwordHash[i])) {
-      alert('Incorrect password.');
+    if (!await isLoginValid(db, name, password)) {
       return;
     }
     console.log('User', name, 'has logged in.');
 
-    setUser(name);
-    setAuthenticated(true);
-    navigate('/kcal');
+    const _name = padUsername(name);
+    signInWithEmailAndPassword(auth, _name, password)
+      .then(() => {
+        setUser(_name);
+        setAuthenticated(true);
+        navigate('/kcal');
+      })
+      .catch((error) => {
+        alert('An error was encountered during sign in. Please try again.')
+        console.error(error);
+      });
   };
 
   const handleSignup = async () => {
-    if (name === '' || password === '') {
-      alert('Username or password field is empty');
+    if (!await isSignUpValid(db, name, password)) {
       return;
     }
-
-    // ensure that user does not already exist
-    const docRef = doc(db, 'users', name);
-    const docSnapshot = await getDoc(docRef);
-    if (docSnapshot.exists()) {
-      alert('User with the given name already exists.');
-      return;
-    }
-
     try {
       const salt = randomStr().substring(0, 8);
       await setDoc(doc(db, 'users', name), {
@@ -60,12 +45,20 @@ function Login({ setAuthenticated }) {
       });
       console.log('User', name, 'has logged in.');
 
-      setUser(name);
-      setAuthenticated(true);
-      navigate('/kcal');
+      const _name = padUsername(name);
+      createUserWithEmailAndPassword(auth, _name, password)
+        .then(() => {
+          setUser(_name);
+          setAuthenticated(true);
+          navigate('/kcal');
+        })
+        .catch((error) => {
+          alert('An error was encountered during user creation. Please try again.')
+          console.error(error);
+        });
     } catch (e) {
       alert('There was an error during sign up. Please try again.');
-      console.error('Error adding document: ', e);
+      console.error('Error adding document:', e);
     }
   };
 
