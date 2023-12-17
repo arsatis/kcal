@@ -129,8 +129,22 @@ button:hover {
   cursor: pointer;
 }
 
+.day.of-week {
+  font-weight: bold;
+}
+
 .day.active:hover {
   background-color: #e6e6e6;
+}
+
+.event {
+  background-color: #d2b48c;
+  color: white;
+  padding: 4px;
+  margin-top: 4px;
+  max-width: 8ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Event Form Styles */
@@ -190,17 +204,10 @@ input {
 
 .event-list button {
   float: left;
-  margin: -12% 0 auto -12%;
+  margin: -10px 0 auto -10px;
   padding: 1px 2px;
   font-size: 10px;
   text-align: center;
-}
-
-.event {
-  background-color: #d2b48c;
-  color: white;
-  padding: 4px;
-  margin-top: 4px;
 }
 
 .event-date {
@@ -218,6 +225,10 @@ input {
 
 .event-title {
   margin-right: 8px;
+  width: 70%;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -234,7 +245,6 @@ input {
   }
 
   .event-list button {
-    margin: -10px 0 auto -10px;
     font-size: 8px;
   }
 }

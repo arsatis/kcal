@@ -9,7 +9,7 @@ function EventList({ events, onEventDelete }) {
               <button onClick={() => onEventDelete(event.id)}>{'\u2716'}</button>
               {parseTimeToDateString(event.time)}
             </div>
-            <span className='event-title'>{event.name}</span>
+            <span className='event-title' title={event.name}>{event.name}</span>
           </li>
         ))}
       </ul>
