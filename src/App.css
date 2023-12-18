@@ -10,6 +10,11 @@
   display: flex;
 }
 
+input {
+  padding: 8px;
+  margin-right: 8px;
+}
+
 /* Button Styles */
 
 button {
@@ -146,9 +151,7 @@ button:hover {
   margin-top: 20px;
 }
 
-input {
-  padding: 8px;
-  margin-right: 8px;
+.event-form input {
   width: 30%;
   height: 30%;
 }
