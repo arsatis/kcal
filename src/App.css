@@ -324,6 +324,12 @@ button:hover {
     max-width: 6ch;
   }
 
+  .full-width-container .event {
+    max-width: 6ch;
+  }
+
+  /* Event List Styles */
+
   .event-date {
     width: 20%;
   }
