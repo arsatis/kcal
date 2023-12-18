@@ -5,9 +5,11 @@ function EventList({ events, onEventDelete }) {
       <ul>
         {events.map((event) => (
           <li key={event.id}>
-            <div className='event-date'>{parseTimeToDateString(event.time)}</div>
-            <span className='event-title'>{event.name}</span>
-            <button onClick={() => onEventDelete(event.id)}>{'\u2573'}</button>
+            <div className='event-date'>
+              <button onClick={() => onEventDelete(event.id)}>{'\u2716'}</button>
+              {parseTimeToDateString(event.time)}
+            </div>
+            <span className='event-title' title={event.name}>{event.name}</span>
           </li>
         ))}
       </ul>

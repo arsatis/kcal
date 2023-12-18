@@ -109,14 +109,6 @@ button:hover {
   margin: 0 8px;
 }
 
-.days-of-week {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  text-align: center;
-  font-weight: bold;
-}
-
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -129,19 +121,36 @@ button:hover {
   cursor: pointer;
 }
 
+.day.of-week {
+  font-weight: bold;
+}
+
 .day.active:hover {
   background-color: #e6e6e6;
+}
+
+.event {
+  background-color: #d2b48c;
+  color: white;
+  padding: 4px;
+  margin: 4px auto auto;
+  max-width: 9ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Event Form Styles */
 
 .event-form {
+  text-align: center;
   margin-top: 20px;
 }
 
 input {
   padding: 8px;
   margin-right: 8px;
+  width: 30%;
+  height: 30%;
 }
 
 /* Event List Styles */
@@ -189,15 +198,11 @@ input {
 }
 
 .event-list button {
-  margin-left: auto;
+  float: left;
+  margin: -10px 0 auto -10px;
+  padding: 1px 2px;
+  font-size: 10px;
   text-align: center;
-}
-
-.event {
-  background-color: #d2b48c;
-  color: white;
-  padding: 4px;
-  margin-top: 4px;
 }
 
 .event-date {
@@ -215,9 +220,25 @@ input {
 
 .event-title {
   margin-right: 8px;
+  width: 70%;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media only screen and (max-width: 1024px) {
+  /* Calendar Styles */
+
+  .day {
+    font-size: 12px;
+  }
+
+  .event {
+    font-size: 10px;
+  }
+
+  /* Event List Styles */
+
   .event-date {
     font-size: 10px;
   }
@@ -231,6 +252,41 @@ input {
   }
 
   .event-list button {
-    font-size: 12px;
+    font-size: 8px;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  .page {
+    padding: 0;
+  }
+
+  .app-container {
+    display: grid;
+  }
+
+  .calendar-container {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .event-list-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  /* Header Styles */
+  
+  .header {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* Calendar Styles */
+
+  .event {
+    font-size: 8px;
+    max-width: 6ch;
   }
 }

@@ -2,7 +2,6 @@ function Calendar({ selectedDate, onDateClick, events }) {
   return (
     <div className='calendar'>
       <CalendarHeader selectedDate={selectedDate} onDateClick={onDateClick} />
-      <DaysOfWeek />
       <CalendarDays selectedDate={selectedDate} onDateClick={onDateClick} events={events} />
     </div>
   );
@@ -42,20 +41,6 @@ function CalendarHeader({ selectedDate, onDateClick }) {
   );
 }
 
-function DaysOfWeek() {
-  return (
-    <div className='days-of-week'>
-      <div>Sun</div>
-      <div>Mon</div>
-      <div>Tue</div>
-      <div>Wed</div>
-      <div>Thu</div>
-      <div>Fri</div>
-      <div>Sat</div>
-    </div>
-  );
-}
-
 function CalendarDays({ selectedDate, onDateClick, events }) {
   const daysInMonth = new Date(
     selectedDate.getFullYear(),
@@ -70,7 +55,15 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
   ).getDay();
 
   const renderDays = () => {
-    const days = [];
+    const days = [
+      <div className='day of-week'>Sun</div>,
+      <div className='day of-week'>Mon</div>,
+      <div className='day of-week'>Tue</div>,
+      <div className='day of-week'>Wed</div>,
+      <div className='day of-week'>Thu</div>,
+      <div className='day of-week'>Fri</div>,
+      <div className='day of-week'>Sat</div>
+    ];
 
     for (let i = 1; i <= daysInMonth + startDay; i++) {
       const date = i - startDay;
@@ -90,14 +83,13 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
           {events.map((event) => {
             const eventDate = new Date(event.time);
             if (eventDate.toDateString() === currentDate.toDateString() && date > 0) {
-              return <div key={event.id} className='event'>{event.name}</div>;
+              return <div key={event.id} className='event' title={event.name}>{event.name}</div>;
             }
             return null;
           })}
         </div>
       );
     }
-
     return days;
   };
 
