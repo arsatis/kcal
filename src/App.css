@@ -213,11 +213,19 @@ button:hover {
 .del-button {
   float: right;
   margin: -10px -10px auto 0;
+  padding: auto;
+  height: 14px;
+  width: 14px;
+  text-align: center;
 }
 
 .edit-button {
   float: left;
   margin: -10px 0 auto -10px;
+  padding: auto;
+  height: 14px;
+  width: 14px;
+  text-align: center;
 }
 
 .event-date {
