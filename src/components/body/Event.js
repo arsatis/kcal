@@ -20,6 +20,14 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     setEditMode(false);
   };
 
+  const onCancelEdit = async () => {
+    if (isEditMode) {
+      setName(event.name);
+      setDate(new Date(event.time).toISOString().substring(0, 19));
+      setEditMode(false);
+    }
+  }
+
   return (
     <li key={event.id}>
       <div className='event-date'>
@@ -29,7 +37,9 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           : '\u270e'
         }
         </button>
-        <button className='del-button' onClick={() => onEventDelete(event.id)}>{'\u2716'}</button>
+        <button className='del-button' onClick={
+          () => isEditMode ? onCancelEdit() : onEventDelete(event.id)
+        }>{'\u2716'}</button>
         {isEditMode
           ? <input
             type='datetime-local'
