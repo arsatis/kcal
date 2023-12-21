@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function Event({ event, onEventDelete, onEventUpdate }) {
   const [isEditMode, setEditMode] = useState(false);
@@ -32,14 +34,21 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     <li key={event.id}>
       <div className='event-date'>
         <button className='edit-button' onClick={() => onEventEdit()}>
-        {isEditMode
-          ? '\u2713'
-          : '\u270e'
-        }
+          {isEditMode
+            ? <FontAwesomeIcon icon={faCheck} />
+            : <FontAwesomeIcon icon={faPenToSquare} />
+          }
         </button>
         <button className='del-button' onClick={
-          () => isEditMode ? onCancelEdit() : onEventDelete(event.id)
-        }>{'\u2716'}</button>
+          () => isEditMode
+            ? onCancelEdit()
+            : onEventDelete(event.id)
+        }>
+          {isEditMode
+            ? <FontAwesomeIcon icon={faXmark} />
+            : <FontAwesomeIcon icon={faTrashCan} />
+          }
+        </button>
         {isEditMode
           ? <input
             type='datetime-local'

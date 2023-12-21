@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleLeft, faCircleRight } from '@fortawesome/free-solid-svg-icons'
+
 function Calendar({ selectedDate, onDateClick, events }) {
   return (
     <div className='calendar'>
@@ -34,9 +37,13 @@ function CalendarHeader({ selectedDate, onDateClick }) {
 
   return (
     <div className='calendar-header'>
-      <button className='calendar-nav-button' onClick={() => navigateMonth(-1)}>&lt;</button>
+      <button className='calendar-nav-button' onClick={() => navigateMonth(-1)}>
+        <FontAwesomeIcon icon={faCircleLeft} />
+      </button>
       <span>{`${month} ${year}`}</span>
-      <button className='calendar-nav-button' onClick={() => navigateMonth(1)}>&gt;</button>
+      <button className='calendar-nav-button' onClick={() => navigateMonth(1)}>
+        <FontAwesomeIcon icon={faCircleRight} />
+      </button>
     </div>
   );
 }

@@ -112,6 +112,9 @@ button:hover {
 
 .calendar-nav-button {
   margin: 0 8px;
+  border-radius: 100px;
+  text-align: center;
+  vertical-align: baseline;
 }
 
 .days {
@@ -214,8 +217,8 @@ button:hover {
   float: right;
   margin: -10px -10px auto 0;
   padding: auto;
-  height: 14px;
-  width: 14px;
+  height: 15px;
+  width: 15px;
   text-align: center;
 }
 
@@ -223,8 +226,8 @@ button:hover {
   float: left;
   margin: -10px 0 auto -10px;
   padding: auto;
-  height: 14px;
-  width: 14px;
+  height: 15px;
+  width: 15px;
   text-align: center;
 }
 
