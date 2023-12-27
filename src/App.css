@@ -10,6 +10,11 @@
   display: flex;
 }
 
+input {
+  padding: 8px;
+  margin-right: 8px;
+}
+
 /* Button Styles */
 
 button {
@@ -107,6 +112,10 @@ button:hover {
 
 .calendar-nav-button {
   margin: 0 8px;
+  padding: 8px 9px;
+  border-radius: 100px;
+  text-align: center;
+  vertical-align: baseline;
 }
 
 .days {
@@ -139,6 +148,10 @@ button:hover {
   text-overflow: ellipsis;
 }
 
+.full-width-container .event {
+  max-width: 14ch;
+}
+
 /* Event Form Styles */
 
 .event-form {
@@ -146,9 +159,7 @@ button:hover {
   margin-top: 20px;
 }
 
-input {
-  padding: 8px;
-  margin-right: 8px;
+.event-form input {
   width: 30%;
   height: 30%;
 }
@@ -198,10 +209,26 @@ input {
 }
 
 .event-list button {
-  float: left;
-  margin: -10px 0 auto -10px;
   padding: 1px 2px;
   font-size: 10px;
+  text-align: center;
+}
+
+.del-button {
+  float: right;
+  margin: -10px -10px auto 0;
+  padding: auto;
+  height: 15px;
+  width: 15px;
+  text-align: center;
+}
+
+.edit-button {
+  float: left;
+  margin: -10px 0 auto -10px;
+  padding: auto;
+  height: 15px;
+  width: 15px;
   text-align: center;
 }
 
@@ -210,12 +237,19 @@ input {
   background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 25%;
+  width: 30%;
   margin-right: 8px;
   padding: 5px 5px;
   font-size: 12px;
   text-align: center;
   cursor: default;
+}
+
+.event-date input {
+  height: 0;
+  width: 65%;
+  font-size: 10px;
+  margin: -5px -60px;
 }
 
 .event-title {
@@ -224,6 +258,24 @@ input {
   max-width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.event-title input {
+  height: 4px;
+  width: 90%;
+  font-size: 10px;
+}
+
+/* iOS devices */
+@supports (-webkit-touch-callout: none) {
+  .event-date input {
+    max-width: 100%;
+  }
+
+  .event-title input {
+    width: 85%;
+  }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -239,20 +291,20 @@ input {
 
   /* Event List Styles */
 
-  .event-date {
-    font-size: 10px;
-  }
-
-  .event-title {
-    font-size: 12px;
-  }
-
   .event-list h2 {
     font-size: 20px;
   }
 
-  .event-list button {
-    font-size: 8px;
+  .event-date {
+    width: 45%;
+    font-size: 10px;
+  }
+
+  /* non-iOS devices */
+  @supports not (-webkit-touch-callout: none) {
+    .event-title input {
+      width: 80%;
+    }
   }
 }
 
@@ -288,5 +340,23 @@ input {
   .event {
     font-size: 8px;
     max-width: 6ch;
+  }
+
+  .full-width-container .event {
+    max-width: 6ch;
+  }
+
+  /* Event List Styles */
+
+  .event-date {
+    min-width: 20%;
+    width: auto;
+  }
+
+  /* non-iOS devices */
+  @supports not (-webkit-touch-callout: none) {
+    .event-title input {
+      width: 90%;
+    }
   }
 }

@@ -10,6 +10,37 @@ function Body({ isEventListVisible }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
 
+  const handleEventAdd = async (event) => {
+    setEvents([...events, event])
+    await addEvent(db, user, event);
+  };
+  
+  const handleEventDelete = async (eventId) => {
+    const matchedEvents = events.filter((e) => e.id === eventId);
+    if (matchedEvents.length === 0) {
+      alert('Event to be deleted does not exist.');
+      return;
+    }
+    const event = matchedEvents[0];
+
+    const updatedEvents = events.filter((e) => e.id !== eventId);
+    setEvents(updatedEvents);
+    await deleteEvent(db, user, event);
+  };
+
+  const handleEventUpdate = async (oldEvent, newEvent) => {
+    const eventIdx = events.findIndex((e) => e.id === oldEvent.id);
+    const newEvents = [
+      ...events.slice(0, eventIdx),
+      newEvent,
+      ...events.slice(eventIdx + 1)
+    ];
+    setEvents(newEvents);
+
+    await deleteEvent(db, user, oldEvent);
+    await addEvent(db, user, newEvent);
+  };
+
   useEffect(() => {
     async function updateEvents() {
       const events = await getEvents(db, user);
@@ -17,24 +48,6 @@ function Body({ isEventListVisible }) {
     }
     updateEvents();
   }, [db, user]);
-
-  const handleEventAdd = (event) => {
-    setEvents([...events, event])
-    addEvent(db, user, event);
-  };
-  
-  const handleEventDelete = (eventId) => {
-    const matchedEvents = events.filter((event) => event.id === eventId);
-    if (matchedEvents.length === 0) {
-      alert('Event to be deleted does not exist.');
-      return;
-    }
-    const event = matchedEvents[0];
-
-    const updatedEvents = events.filter((event) => event.id !== eventId);
-    setEvents(updatedEvents);
-    deleteEvent(db, user, event);
-  };
 
   return (
     <div className='app-container'>
@@ -52,6 +65,7 @@ function Body({ isEventListVisible }) {
         {isEventListVisible && <EventList
           events={events}
           onEventDelete={handleEventDelete}
+          onEventUpdate={handleEventUpdate}
         />}
       </div>
     </div>
