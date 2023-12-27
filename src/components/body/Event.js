@@ -31,7 +31,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
   const onCancelEdit = async () => {
     if (isEditMode) {
       setName(event.name);
-      setDate(new Date(event.time).toISOString().substring(0, 19));
+      setDate(event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19));
       setEditMode(false);
     }
   }
