@@ -5,11 +5,11 @@ function EventForm({ onEventAdd }) {
   const [selectedDate, setSelectedDate] = useState('');
 
   const handleAddEvent = () => {
-    if (name.trim() !== '' && selectedDate !== '') {
+    if (name.trim() !== '') {
       const newEvent = {
         id: new Date().getTime(),
         name,
-        time: Date.parse(selectedDate),
+        time: selectedDate === '' ? null : Date.parse(selectedDate),
       };
       onEventAdd(newEvent);
       setName('');

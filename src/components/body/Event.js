@@ -5,18 +5,24 @@ import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-s
 function Event({ event, onEventDelete, onEventUpdate }) {
   const [isEditMode, setEditMode] = useState(false);
   const [name, setName] = useState(event.name);
-  const [date, setDate] = useState(new Date(event.time).toISOString().substring(0, 19));
+  const [date, setDate] = useState(
+    event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19)
+  );
 
   const onEventEdit = async () => {
     if (!isEditMode) {
       setEditMode(true);
       return;
     }
+    if (name.trim() === '') {
+      alert('Event name should not be empty.');
+      return;
+    }
 
     const updatedEvent = {
       id: event.id,
       name,
-      time: Date.parse(date),
+      time: date === '' ? null : Date.parse(date),
     };
     await onEventUpdate(event, updatedEvent);
     setEditMode(false);
@@ -55,7 +61,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
-          : date.substring(0, 10)
+          : (date === '' ? '(no date)' : date.substring(0, 10))
         }
       </div>
       <div className='event-title' title={event.name}>
