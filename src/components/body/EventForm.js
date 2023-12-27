@@ -5,16 +5,19 @@ function EventForm({ onEventAdd }) {
   const [selectedDate, setSelectedDate] = useState('');
 
   const handleAddEvent = () => {
-    if (name.trim() !== '' && selectedDate !== '') {
-      const newEvent = {
-        id: new Date().getTime(),
-        name,
-        time: Date.parse(selectedDate),
-      };
-      onEventAdd(newEvent);
-      setName('');
-      setSelectedDate('');
+    if (name.trim() === '') {
+      alert('Event name should not be empty.');
+      return;
     }
+    
+    const newEvent = {
+      id: new Date().getTime(),
+      name,
+      time: selectedDate === '' ? null : Date.parse(selectedDate),
+    };
+    onEventAdd(newEvent);
+    setName('');
+    setSelectedDate('');
   };
 
   const handleKeyUp = (e) => {
