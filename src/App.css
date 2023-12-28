@@ -250,7 +250,7 @@ button:hover {
   cursor: default;
 }
 
-.event-date-input {
+.event-date-input, .event-date-empty {
   margin: 8px auto;
 }
 
@@ -278,12 +278,16 @@ button:hover {
 
 /* iOS devices */
 @supports (-webkit-touch-callout: none) {
+  .event-date-empty {
+    margin-top: 0;
+  }
+
   .event-date-input {
-    margin-top: -8px;
+    margin-top: -10px;
   }
 
   .event-date input {
-    max-width: 80%;
+    max-width: 65%;
   }
 
   .event-title input {

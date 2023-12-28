@@ -66,7 +66,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           }
         </button>
         {isEditMode
-          ? <div class='event-date-input'>
+          ? <div class={date === '' ? 'event-date-empty' : 'event-date-input'}>
               <input
                 type='datetime-local'
                 value={date}
