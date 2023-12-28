@@ -2,15 +2,15 @@ import Event from './Event';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedo, faUndo } from '@fortawesome/free-solid-svg-icons'
 
-function EventList({ events, eventHistory, onEventDelete, onEventUpdate, onUndoUpdate }) {
+function EventList({ events, onEventDelete, onEventUpdate, canUndo, onUndo, canRedo, onRedo }) {
   return (
     <div className='event-list'>
       <div className='event-list-header'>
         <span>Events</span>
-        {eventHistory.length > 1 && <button onClick={() => onUndoUpdate()}>
+        {canUndo() && <button onClick={() => onUndo()}>
           <FontAwesomeIcon icon={faUndo} />
         </button>}
-        {true && <button onClick={null}>
+        {canRedo() && <button onClick={() => onRedo()}>
           <FontAwesomeIcon icon={faRedo} />
         </button>}
       </div>
