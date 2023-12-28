@@ -18,7 +18,7 @@ function Body({ isEventListVisible }) {
   const handleEventDelete = async (eventId) => {
     const matchedEvents = events.filter((e) => e.id === eventId);
     if (matchedEvents.length === 0) {
-      alert('Event to be deleted does not exist.');
+      console.error('Event to be deleted does not exist.');
       return;
     }
     const event = matchedEvents[0];

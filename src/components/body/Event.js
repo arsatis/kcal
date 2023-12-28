@@ -42,6 +42,10 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     }
   }
 
+  const onEventDateClear = () => {
+    setDate('');
+  }
+
   return (
     <li key={event.id}>
       <div className='event-date'>
@@ -62,13 +66,18 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           }
         </button>
         {isEditMode
-          ? <input
-            type='datetime-local'
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          ? <div class='event-date-input'>
+              <input
+                type='datetime-local'
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
           : (date === '' ? '(no date)' : date.substring(0, 10))
         }
+        {isEditMode && <button className='clear-date-button' onClick={() => onEventDateClear()}>
+          <div className='clear-date-text'>clear</div>
+        </button>}
       </div>
       <div className='event-title' title={event.name}>
         {isEditMode
