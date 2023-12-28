@@ -1,5 +1,4 @@
 /* Base Styles */
-
 .page {
   max-width: 1200px;
   padding: 0 8px;
@@ -16,7 +15,6 @@ input {
 }
 
 /* Button Styles */
-
 button {
   padding: 8px;
   background-color: #d2b48c;
@@ -31,7 +29,6 @@ button:hover {
 }
 
 /* Login Page Styles */
-
 .login-page {
   max-width: 1200px;
   padding: 0 8px;
@@ -73,7 +70,6 @@ button:hover {
 }
 
 /* Header Styles */
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -86,7 +82,6 @@ button:hover {
 }
 
 /* Calendar Styles */
-
 .full-width-container {
   width: 100%;
 }
@@ -153,19 +148,33 @@ button:hover {
 }
 
 /* Event Form Styles */
-
 .event-form {
-  text-align: center;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .event-form input {
-  width: 30%;
-  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 5px;
+  height: 1rem;
+  width: 12rem;
+}
+
+.event-form button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 5px;
+  height: 2rem;
+  width: 6rem;
 }
 
 /* Event List Styles */
-
 .zero-width-container {
   width: 0%;
 }
@@ -232,6 +241,18 @@ button:hover {
   text-align: center;
 }
 
+.clear-date-button {
+  display: block;
+  margin: 8px auto 0 auto;
+  padding: 10px;
+  text-align: center;
+}
+
+.clear-date-text {
+  padding: 1px;
+  font-size: 8px;
+}
+
 .event-date {
   display: inline-block;
   background-color: #eee;
@@ -245,9 +266,13 @@ button:hover {
   cursor: default;
 }
 
+.event-date-input, .event-date-empty {
+  margin: 8px auto;
+}
+
 .event-date input {
   height: 0;
-  width: 65%;
+  width: 80%;
   font-size: 10px;
   margin: -5px -60px;
 }
@@ -269,8 +294,28 @@ button:hover {
 
 /* iOS devices */
 @supports (-webkit-touch-callout: none) {
+  .event-form input {
+    width: 9rem;
+  }
+
+  .event-form input[type="datetime-local"], input[type="date"] {
+    height: 2rem;
+  }
+  
+  .event-form button {
+    width: 5rem;
+  }
+
+  .event-date-empty {
+    margin-top: 0;
+  }
+
+  .event-date-input {
+    margin-top: -10px;
+  }
+
   .event-date input {
-    max-width: 100%;
+    max-width: 65%;
   }
 
   .event-title input {
@@ -280,7 +325,6 @@ button:hover {
 
 @media only screen and (max-width: 1024px) {
   /* Calendar Styles */
-
   .day {
     font-size: 12px;
   }
@@ -290,7 +334,6 @@ button:hover {
   }
 
   /* Event List Styles */
-
   .event-list h2 {
     font-size: 20px;
   }
@@ -302,8 +345,8 @@ button:hover {
 
   /* non-iOS devices */
   @supports not (-webkit-touch-callout: none) {
-    .event-title input {
-      width: 80%;
+    .event-date-input {
+      margin-top: 10px;
     }
   }
 }
@@ -329,14 +372,12 @@ button:hover {
   }
 
   /* Header Styles */
-  
   .header {
     padding-left: 8px;
     padding-right: 8px;
   }
 
   /* Calendar Styles */
-
   .event {
     font-size: 8px;
     max-width: 6ch;
@@ -347,7 +388,6 @@ button:hover {
   }
 
   /* Event List Styles */
-
   .event-date {
     min-width: 20%;
     width: auto;

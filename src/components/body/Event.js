@@ -28,12 +28,22 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     setEditMode(false);
   };
 
-  const onCancelEdit = async () => {
+  const onCancelEdit = () => {
     if (isEditMode) {
       setName(event.name);
       setDate(event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19));
       setEditMode(false);
     }
+  }
+
+  const onEventDeleteWithConfirmation = (eventId) => {
+    if (window.confirm('Are you sure you wish to delete this event?')) {
+      onEventDelete(eventId);
+    }
+  }
+
+  const onEventDateClear = () => {
+    setDate('');
   }
 
   return (
@@ -48,7 +58,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
         <button className='del-button' onClick={
           () => isEditMode
             ? onCancelEdit()
-            : onEventDelete(event.id)
+            : onEventDeleteWithConfirmation(event.id)
         }>
           {isEditMode
             ? <FontAwesomeIcon icon={faXmark} />
@@ -56,13 +66,18 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           }
         </button>
         {isEditMode
-          ? <input
-            type='datetime-local'
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          ? <div class={date === '' ? 'event-date-empty' : 'event-date-input'}>
+              <input
+                type='datetime-local'
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
           : (date === '' ? '(no date)' : date.substring(0, 10))
         }
+        {isEditMode && <button className='clear-date-button' onClick={() => onEventDateClear()}>
+          <div className='clear-date-text'>clear</div>
+        </button>}
       </div>
       <div className='event-title' title={event.name}>
         {isEditMode
