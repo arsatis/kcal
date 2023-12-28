@@ -149,13 +149,29 @@ button:hover {
 
 /* Event Form Styles */
 .event-form {
-  text-align: center;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .event-form input {
-  width: 30%;
-  height: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 5px;
+  height: 1rem;
+  width: 12rem;
+}
+
+.event-form button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 5px;
+  height: 2rem;
+  width: 6rem;
 }
 
 /* Event List Styles */
@@ -278,6 +294,18 @@ button:hover {
 
 /* iOS devices */
 @supports (-webkit-touch-callout: none) {
+  .event-form input {
+    width: 9rem;
+  }
+
+  .event-form input[type="datetime-local"], input[type="date"] {
+    height: 2rem;
+  }
+  
+  .event-form button {
+    width: 5rem;
+  }
+
   .event-date-empty {
     margin-top: 0;
   }
