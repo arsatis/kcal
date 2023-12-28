@@ -68,7 +68,6 @@ function Body({ isEventListVisible }) {
 
   useEffect(() => {
     const handleKeyDown = async (event) => {
-      event.preventDefault();
       const code = event.which || event.keyCode;
       const charCode = String.fromCharCode(code).toLowerCase();
       if ((event.ctrlKey || event.metaKey) && charCode === 'z') {

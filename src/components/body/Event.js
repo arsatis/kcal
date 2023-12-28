@@ -47,7 +47,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
   }
 
   return (
-    <li key={event.id}>
+    <li>
       <div className='event-date'>
         <button className='edit-button' onClick={() => onEventEdit()}>
           {isEditMode

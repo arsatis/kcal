@@ -10,6 +10,7 @@ function EventList({ events, eventHistory, onEventDelete, onEventUpdate, onUndoU
       <ul>
         {events.map((event) => (
           <Event
+            key={event.id}
             event={event}
             onEventDelete={onEventDelete}
             onEventUpdate={onEventUpdate}

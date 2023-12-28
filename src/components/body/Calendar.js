@@ -63,13 +63,13 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
 
   const renderDays = () => {
     const days = [
-      <div className='day of-week'>Sun</div>,
-      <div className='day of-week'>Mon</div>,
-      <div className='day of-week'>Tue</div>,
-      <div className='day of-week'>Wed</div>,
-      <div className='day of-week'>Thu</div>,
-      <div className='day of-week'>Fri</div>,
-      <div className='day of-week'>Sat</div>
+      <div className='day of-week' key={-7}>Sun</div>,
+      <div className='day of-week' key={-6}>Mon</div>,
+      <div className='day of-week' key={-5}>Tue</div>,
+      <div className='day of-week' key={-4}>Wed</div>,
+      <div className='day of-week' key={-3}>Thu</div>,
+      <div className='day of-week' key={-2}>Fri</div>,
+      <div className='day of-week' key={-1}>Sat</div>
     ];
 
     for (let i = 1; i <= daysInMonth + startDay; i++) {
