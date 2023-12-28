@@ -214,6 +214,7 @@ button:hover {
 
 .event-list-header button {
   padding: 5px;
+  margin: 2px;
 }
 
 .event-list ul {
@@ -338,7 +339,7 @@ button:hover {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1080px) {
   /* Calendar Styles */
   .day {
     font-size: 12px;
@@ -366,7 +367,7 @@ button:hover {
   }
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 768px) {
   .page {
     padding: 0;
   }
