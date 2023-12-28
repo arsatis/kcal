@@ -36,9 +36,9 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     }
   }
 
-  const onEventDeleteWithConfirmation = (eventId) => {
+  const onEventDeleteWithConfirmation = async (eventId) => {
     if (window.confirm('Are you sure you wish to delete this event?')) {
-      onEventDelete(eventId);
+      await onEventDelete(eventId);
     }
   }
 
@@ -66,7 +66,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           }
         </button>
         {isEditMode
-          ? <div class={date === '' ? 'event-date-empty' : 'event-date-input'}>
+          ? <div className={date === '' ? 'event-date-empty' : 'event-date-input'}>
               <input
                 type='datetime-local'
                 value={date}

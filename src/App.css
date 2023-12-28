@@ -207,7 +207,7 @@ button:hover {
   border-bottom: 1px solid #ccc;
 }
 
-.event-list-header text {
+.event-list-header span {
   font-size: 24px;
   font-weight: bold;
 }
@@ -349,7 +349,7 @@ button:hover {
   }
 
   /* Event List Styles */
-  .event-list-header text {
+  .event-list-header span {
     font-size: 20px;
   }
 

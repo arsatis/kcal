@@ -1,17 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
 import { UserContext } from '../providers/UserProvider';
-import { addEvent, deleteEvent, getEvents } from '../utils/eventUtils';
+import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 
 function Body({ isEventListVisible }) {
   const { db, user } = useContext(UserContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [eventHistory, setEventHistory] = useState([]);
 
   const handleEventAdd = async (event) => {
-    setEvents([...events, event])
+    const newEvents = [...events, event];
+    setEvents(newEvents)
+    setEventHistory([...eventHistory, newEvents]);
     await addEvent(db, user, event);
   };
   
@@ -25,6 +28,7 @@ function Body({ isEventListVisible }) {
 
     const updatedEvents = events.filter((e) => e.id !== eventId);
     setEvents(updatedEvents);
+    setEventHistory([...eventHistory, updatedEvents]);
     await deleteEvent(db, user, event);
   };
 
@@ -36,18 +40,44 @@ function Body({ isEventListVisible }) {
       ...events.slice(eventIdx + 1)
     ];
     setEvents(newEvents);
+    setEventHistory([...eventHistory, newEvents]);
 
     await deleteEvent(db, user, oldEvent);
     await addEvent(db, user, newEvent);
   };
 
+  const handleUndoUpdate = useCallback(async () => {
+    if (eventHistory.length === 1) {
+      return;
+    }
+
+    const oldEvents = eventHistory[eventHistory.length - 2];
+    setEvents(oldEvents);
+    setEventHistory(eventHistory.slice(0, eventHistory.length - 1));
+    await updateEventList(db, user, oldEvents);
+  }, [db, user, eventHistory]);
+
   useEffect(() => {
-    async function updateEvents() {
+    const updateEvents = async () => {
       const events = await getEvents(db, user);
       setEvents(events);
+      setEventHistory(e => e.length === 0 ? [...e, events] : e);
     }
     updateEvents();
   }, [db, user]);
+
+  useEffect(() => {
+    const handleKeyDown = async (event) => {
+      event.preventDefault();
+      const code = event.which || event.keyCode;
+      const charCode = String.fromCharCode(code).toLowerCase();
+      if ((event.ctrlKey || event.metaKey) && charCode === 'z') {
+        await handleUndoUpdate();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleUndoUpdate]);
 
   return (
     <div className='app-container'>
@@ -64,8 +94,10 @@ function Body({ isEventListVisible }) {
       <div className={isEventListVisible ? 'event-list-container' : 'zero-width-container'}>
         {isEventListVisible && <EventList
           events={events}
+          eventHistory={eventHistory}
           onEventDelete={handleEventDelete}
           onEventUpdate={handleEventUpdate}
+          onUndoUpdate={handleUndoUpdate}
         />}
       </div>
     </div>
