@@ -3,7 +3,10 @@ import Event from './Event';
 function EventList({ events, onEventDelete, onEventUpdate }) {
   return (
     <div className='event-list'>
-      <h2>Events</h2>
+      <div className='event-list-header'>
+        <text>Events</text>
+        <button onClick={null}>Undo change</button>
+      </div>
       <ul>
         {events.map((event) => (
           <Event
