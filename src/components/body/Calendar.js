@@ -69,7 +69,7 @@ function CalendarDays({ selectedDate, onDateClick, events }) {
       <div className='day of-week' key={-4}>Wed</div>,
       <div className='day of-week' key={-3}>Thu</div>,
       <div className='day of-week' key={-2}>Fri</div>,
-      <div className='day of-week' key={-1}>Sat</div>
+      <div className='day of-week' key={-1}>Sat</div>,
     ];
 
     for (let i = 1; i <= daysInMonth + startDay; i++) {

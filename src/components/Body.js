@@ -43,7 +43,7 @@ function Body({ isEventListVisible }) {
     const newEvents = [
       ...events.slice(0, eventIdx),
       newEvent,
-      ...events.slice(eventIdx + 1)
+      ...events.slice(eventIdx + 1),
     ];
     const newHistoryIdx = historyIdx + 1;
 
