@@ -1,13 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function Event({ event, onEventDelete, onEventUpdate }) {
   const [isEditMode, setEditMode] = useState(false);
   const [name, setName] = useState(event.name);
-  const [date, setDate] = useState(
-    event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19)
-  );
+  const [date, setDate] = useState(convertTimestampToDateTime(event.time));
 
   const onEventEdit = async () => {
     if (!isEditMode) {
@@ -31,7 +29,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
   const onCancelEdit = () => {
     if (isEditMode) {
       setName(event.name);
-      setDate(event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19));
+      setDate(convertTimestampToDateTime(event.time));
       setEditMode(false);
     }
   }
@@ -45,6 +43,23 @@ function Event({ event, onEventDelete, onEventUpdate }) {
   const onEventDateClear = () => {
     setDate('');
   }
+
+  useEffect(() => {
+    const syncEventDetails = () => {
+      if (isEditMode) {
+        return;
+      }
+      
+      if (name !== event.name) {
+        setName(event.name);
+      }
+      const currDateTime = convertTimestampToDateTime(event.time);
+      if (date !== currDateTime) {
+        setDate(currDateTime);
+      }
+    }
+    syncEventDetails();
+  }, [isEditMode, name, date, event.name, event.time]);
 
   return (
     <li>
@@ -91,6 +106,10 @@ function Event({ event, onEventDelete, onEventUpdate }) {
       </div>
     </li>
   );
+}
+
+function convertTimestampToDateTime(eventTime) {
+  return eventTime === null ? '' : new Date(eventTime).toISOString().substring(0, 19);
 }
 
 export default Event;

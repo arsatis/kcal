@@ -63,7 +63,7 @@ function Body({ isEventListVisible }) {
       return;
     }
     const newHistoryIdx = historyIdx - 1;
-    const oldEvents = [...eventHistory[newHistoryIdx]];
+    const oldEvents = eventHistory[newHistoryIdx];
 
     setEvents(oldEvents);
     setHistoryIdx(newHistoryIdx);
@@ -79,7 +79,7 @@ function Body({ isEventListVisible }) {
       return;
     }
     const newHistoryIdx = historyIdx + 1;
-    const newEvents = [...eventHistory[newHistoryIdx]];
+    const newEvents = eventHistory[newHistoryIdx];
 
     setEvents(newEvents);
     setHistoryIdx(newHistoryIdx);
