@@ -20,12 +20,8 @@ export async function getEvents(db, user) {
 }
 
 export async function addEvent(db, user, event) {
-  const docRef = doc(db, 'events', user);
-
-  // verify that user exists
-  const docSnapshot = await getDoc(docRef);
-  if (!docSnapshot.exists()) {
-    alert('Something went wrong, please log in again.');
+  const docRef = await validateUserExists(db, user);
+  if (docRef === null) {
     return;
   }
 
@@ -35,16 +31,34 @@ export async function addEvent(db, user, event) {
 }
 
 export async function deleteEvent(db, user, event) {
-  const docRef = doc(db, 'events', user);
-
-  // verify that user exists
-  const docSnapshot = await getDoc(docRef);
-  if (!docSnapshot.exists()) {
-    alert('Something went wrong, please log in again.');
+  const docRef = await validateUserExists(db, user);
+  if (docRef === null) {
     return;
   }
   
   await updateDoc(docRef, {
     events: arrayRemove(event)
   });
+}
+
+export async function updateEventList(db, user, events) {
+  const docRef = await validateUserExists(db, user);
+  if (docRef === null) {
+    return;
+  }
+
+  await updateDoc(docRef, {
+    events: events
+  });
+}
+
+async function validateUserExists(db, user) {
+  const docRef = doc(db, 'events', user);
+  const docSnapshot = await getDoc(docRef);
+
+  if (!docSnapshot.exists()) {
+    alert('Something went wrong, please log in again.');
+    return null;
+  }
+  return docRef;
 }

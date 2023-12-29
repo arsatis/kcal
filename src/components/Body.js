@@ -1,17 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
 import { UserContext } from '../providers/UserProvider';
-import { addEvent, deleteEvent, getEvents } from '../utils/eventUtils';
+import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 
 function Body({ isEventListVisible }) {
   const { db, user } = useContext(UserContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [eventHistory, setEventHistory] = useState([]);
+  const [historyIdx, setHistoryIdx] = useState(0);
 
   const handleEventAdd = async (event) => {
-    setEvents([...events, event])
+    const newEvents = [...events, event];
+    const newHistoryIdx = historyIdx + 1;
+
+    setEvents(newEvents)
+    setEventHistory([...eventHistory.slice(0, newHistoryIdx), newEvents]);
+    setHistoryIdx(newHistoryIdx);
     await addEvent(db, user, event);
   };
   
@@ -22,9 +29,12 @@ function Body({ isEventListVisible }) {
       return;
     }
     const event = matchedEvents[0];
-
     const updatedEvents = events.filter((e) => e.id !== eventId);
+    const newHistoryIdx = historyIdx + 1;
+
     setEvents(updatedEvents);
+    setEventHistory([...eventHistory.slice(0, newHistoryIdx), updatedEvents]);
+    setHistoryIdx(newHistoryIdx);
     await deleteEvent(db, user, event);
   };
 
@@ -33,21 +43,74 @@ function Body({ isEventListVisible }) {
     const newEvents = [
       ...events.slice(0, eventIdx),
       newEvent,
-      ...events.slice(eventIdx + 1)
+      ...events.slice(eventIdx + 1),
     ];
-    setEvents(newEvents);
+    const newHistoryIdx = historyIdx + 1;
 
+    setEvents(newEvents);
+    setEventHistory([...eventHistory.slice(0, newHistoryIdx), newEvents]);
+    setHistoryIdx(newHistoryIdx);
     await deleteEvent(db, user, oldEvent);
     await addEvent(db, user, newEvent);
   };
 
+  const canUndo = useCallback(() => {
+    return historyIdx > 0;
+  }, [historyIdx]);
+
+  const handleUndo = useCallback(async () => {
+    if (!canUndo()) {
+      return;
+    }
+    const newHistoryIdx = historyIdx - 1;
+    const oldEvents = eventHistory[newHistoryIdx];
+
+    setEvents(oldEvents);
+    setHistoryIdx(newHistoryIdx);
+    await updateEventList(db, user, oldEvents);
+  }, [db, user, eventHistory, historyIdx, canUndo]);
+
+  const canRedo = useCallback(() => {
+    return historyIdx < eventHistory.length - 1;
+  }, [eventHistory, historyIdx]);
+
+  const handleRedo = useCallback(async () => {
+    if (!canRedo()) {
+      return;
+    }
+    const newHistoryIdx = historyIdx + 1;
+    const newEvents = eventHistory[newHistoryIdx];
+
+    setEvents(newEvents);
+    setHistoryIdx(newHistoryIdx);
+    await updateEventList(db, user, newEvents);
+  }, [db, user, eventHistory, historyIdx, canRedo]);
+
   useEffect(() => {
-    async function updateEvents() {
+    const updateEvents = async () => {
       const events = await getEvents(db, user);
       setEvents(events);
+      setEventHistory(e => e.length === 0 ? [...e, events] : e);
     }
     updateEvents();
   }, [db, user]);
+
+  useEffect(() => {
+    const handleKeyDown = async (event) => {
+      const code = event.which || event.keyCode;
+      const charCode = String.fromCharCode(code).toLowerCase();
+      
+      if (event.ctrlKey || event.metaKey) {
+        if (charCode === 'y' || (charCode === 'z' && event.shiftKey)) {
+          await handleRedo();
+        } else if (charCode === 'z') {
+          await handleUndo();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleUndo, handleRedo]);
 
   return (
     <div className='app-container'>
@@ -66,6 +129,10 @@ function Body({ isEventListVisible }) {
           events={events}
           onEventDelete={handleEventDelete}
           onEventUpdate={handleEventUpdate}
+          canUndo={canUndo}
+          onUndo={handleUndo}
+          canRedo={canRedo}
+          onRedo={handleRedo}
         />}
       </div>
     </div>

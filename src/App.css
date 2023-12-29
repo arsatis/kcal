@@ -197,8 +197,24 @@ button:hover {
   background-color: #f9f9f9;
 }
 
-.event-list h2 {
-  text-align: center;
+.event-list-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  height: 2rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.event-list-header span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.event-list-header button {
+  padding: 5px;
+  margin: 2px;
 }
 
 .event-list ul {
@@ -217,7 +233,7 @@ button:hover {
   flex-grow: 1;
 }
 
-.event-list button {
+.event-date button {
   padding: 1px 2px;
   font-size: 10px;
   text-align: center;
@@ -323,7 +339,7 @@ button:hover {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1080px) {
   /* Calendar Styles */
   .day {
     font-size: 12px;
@@ -334,7 +350,7 @@ button:hover {
   }
 
   /* Event List Styles */
-  .event-list h2 {
+  .event-list-header span {
     font-size: 20px;
   }
 
@@ -351,7 +367,7 @@ button:hover {
   }
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 768px) {
   .page {
     padding: 0;
   }

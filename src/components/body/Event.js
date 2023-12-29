@@ -1,13 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function Event({ event, onEventDelete, onEventUpdate }) {
   const [isEditMode, setEditMode] = useState(false);
   const [name, setName] = useState(event.name);
-  const [date, setDate] = useState(
-    event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19)
-  );
+  const [date, setDate] = useState(convertTimestampToDateTime(event.time));
 
   const onEventEdit = async () => {
     if (!isEditMode) {
@@ -31,14 +29,14 @@ function Event({ event, onEventDelete, onEventUpdate }) {
   const onCancelEdit = () => {
     if (isEditMode) {
       setName(event.name);
-      setDate(event.time === null ? '' : new Date(event.time).toISOString().substring(0, 19));
+      setDate(convertTimestampToDateTime(event.time));
       setEditMode(false);
     }
   }
 
-  const onEventDeleteWithConfirmation = (eventId) => {
+  const onEventDeleteWithConfirmation = async (eventId) => {
     if (window.confirm('Are you sure you wish to delete this event?')) {
-      onEventDelete(eventId);
+      await onEventDelete(eventId);
     }
   }
 
@@ -46,8 +44,25 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     setDate('');
   }
 
+  useEffect(() => {
+    const syncEventDetails = () => {
+      if (isEditMode) {
+        return;
+      }
+      
+      if (name !== event.name) {
+        setName(event.name);
+      }
+      const currDateTime = convertTimestampToDateTime(event.time);
+      if (date !== currDateTime) {
+        setDate(currDateTime);
+      }
+    }
+    syncEventDetails();
+  }, [isEditMode, name, date, event.name, event.time]);
+
   return (
-    <li key={event.id}>
+    <li>
       <div className='event-date'>
         <button className='edit-button' onClick={() => onEventEdit()}>
           {isEditMode
@@ -66,7 +81,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
           }
         </button>
         {isEditMode
-          ? <div class={date === '' ? 'event-date-empty' : 'event-date-input'}>
+          ? <div className={date === '' ? 'event-date-empty' : 'event-date-input'}>
               <input
                 type='datetime-local'
                 value={date}
@@ -91,6 +106,10 @@ function Event({ event, onEventDelete, onEventUpdate }) {
       </div>
     </li>
   );
+}
+
+function convertTimestampToDateTime(eventTime) {
+  return eventTime === null ? '' : new Date(eventTime).toISOString().substring(0, 19);
 }
 
 export default Event;
