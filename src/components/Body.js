@@ -1,13 +1,13 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
+import EventsProvider from './providers/EventsProvider';
 import { UserContext } from './providers/UserProvider';
-import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 
 function Body({ isEventListVisible }) {
   const { db, user } = useContext(UserContext);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [eventHistory, setEventHistory] = useState([]);
   const [historyIdx, setHistoryIdx] = useState(0);
@@ -113,29 +113,25 @@ function Body({ isEventListVisible }) {
   }, [handleUndo, handleRedo]);
 
   return (
-    <div className='app-container'>
-      <div className={isEventListVisible ? 'calendar-container' : 'full-width-container'}>
-        <Calendar
-          selectedDate={selectedDate}
-          onDateClick={(date) => setSelectedDate(date)}
-          events={events}
-        />
-        <EventForm
-          onEventAdd={handleEventAdd}
-        />
+    <EventsProvider>
+      <div className='app-container'>
+        <div className={isEventListVisible ? 'calendar-container' : 'full-width-container'}>
+          <Calendar />
+          <EventForm onEventAdd={handleEventAdd} />
+        </div>
+        <div className={isEventListVisible ? 'event-list-container' : 'zero-width-container'}>
+          {isEventListVisible && <EventList
+            events={events}
+            onEventDelete={handleEventDelete}
+            onEventUpdate={handleEventUpdate}
+            canUndo={canUndo}
+            onUndo={handleUndo}
+            canRedo={canRedo}
+            onRedo={handleRedo}
+          />}
+        </div>
       </div>
-      <div className={isEventListVisible ? 'event-list-container' : 'zero-width-container'}>
-        {isEventListVisible && <EventList
-          events={events}
-          onEventDelete={handleEventDelete}
-          onEventUpdate={handleEventUpdate}
-          canUndo={canUndo}
-          onUndo={handleUndo}
-          canRedo={canRedo}
-          onRedo={handleRedo}
-        />}
-      </div>
-    </div>
+    </EventsProvider>
   );
 }
 
