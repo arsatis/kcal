@@ -1,6 +1,6 @@
 import Event from './Event';
+import { faRedo, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRedo, faUndo } from '@fortawesome/free-solid-svg-icons'
 
 function EventList({ events, onEventDelete, onEventUpdate, canUndo, onUndo, canRedo, onRedo }) {
   return (

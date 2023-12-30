@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function Event({ event, onEventDelete, onEventUpdate }) {
   const [isEditMode, setEditMode] = useState(false);
