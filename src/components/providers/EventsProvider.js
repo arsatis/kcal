@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { addEvent, deleteEvent, getEvents, updateEventList } from '../../utils/eventUtils';
+import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 import { UserContext } from './UserProvider';
 
 function EventsProvider({ children }) {

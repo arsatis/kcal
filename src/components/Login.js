@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { UserContext } from './providers/UserProvider';
-import { isLoginValid, isSignUpValid, padUsername } from '../utils/loginUtils';
+import { isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
