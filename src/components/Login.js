@@ -7,8 +7,8 @@ import { isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
-function Login({ setAuth }) {
-  const { auth, db, setUser } = useContext(UserContext);
+function Login() {
+  const { auth, db, setAuth, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');

@@ -4,7 +4,12 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 function UserProvider({ children }) {
+  const [isAuth, setAuth] = useState(false);
   const [user, setUser] = useState('');
+
+  // TODO: replace userInCache and passwordInCache with more secure methods
+  const [userInCache, setUserInCache] = useState(localStorage.getItem('user'));
+  const [passwordInCache, setPasswordInCache] = useState(localStorage.getItem('password'));
 
   const firebaseConfig = {
     apiKey: 'AIzaSyDC_OOByj0zCcJEgYraBNTo_ItEq_tYOlY',
@@ -20,7 +25,18 @@ function UserProvider({ children }) {
   const auth = getAuth(app);
 
   return (
-    <UserContext.Provider value={{ auth, db, user, setUser }}>
+    <UserContext.Provider value={{
+      auth,
+      db,
+      isAuth,
+      setAuth,
+      user,
+      setUser,
+      userInCache,
+      setUserInCache,
+      passwordInCache,
+      setPasswordInCache,
+    }}>
       {children}
     </UserContext.Provider>
   );

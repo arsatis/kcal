@@ -78,7 +78,11 @@ button:hover {
 }
 
 .header h1 {
-  margin: 0 8px 0 0;
+  margin: 0;
+}
+
+.header button {
+  margin-left: 8px;
 }
 
 /* Calendar Styles */
@@ -180,9 +184,10 @@ button:hover {
 }
 
 .event-list-container {
-  width: 30%;
   display: flex;
   flex-direction: column;
+  width: 30%;
+  margin: auto;
 }
 
 .event-list-container button {
@@ -389,8 +394,8 @@ button:hover {
 
   /* Header Styles */
   .header {
-    padding-left: 8px;
-    padding-right: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
   /* Calendar Styles */

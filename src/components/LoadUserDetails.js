@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { UserContext } from './providers/UserProvider';
 
-function LoadUserDetails({ userInCache, passwordInCache, setAuth }) {
-  const { auth, setUser } = useContext(UserContext);
+function LoadUserDetails() {
+  const { auth, setAuth, setUser, userInCache, passwordInCache } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {

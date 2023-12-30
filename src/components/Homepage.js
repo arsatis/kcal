@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Body from './Body';
 import Header from './Header';
+import { UserContext } from './providers/UserProvider';
 
-function Homepage({ isAuth }) {
+function Homepage() {
+  const { isAuth } = useContext(UserContext);
   const navigate = useNavigate();
   const [isEventListVisible, setEventListVisibility] = useState(true);
 
