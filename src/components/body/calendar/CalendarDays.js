@@ -8,10 +8,6 @@ function CalendarDays() {
   const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
   const startDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1).getDay();
 
-  const getNumCells = (numDays) => {
-    return numDays % 7 === 0 ? numDays : (Math.floor(numDays / 7) + 1) * 7;
-  };
-
   const renderDays = () => {
     const days = [];
     for (let i = 1; i <= 7; i++) {
@@ -29,6 +25,10 @@ function CalendarDays() {
   return (
     <div className='days'>{renderDays()}</div>
   );
+}
+
+function getNumCells(numDays) {
+  return numDays % 7 === 0 ? numDays : (Math.floor(numDays / 7) + 1) * 7;
 }
 
 export default CalendarDays;

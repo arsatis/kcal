@@ -5,27 +5,27 @@ import { EventListContext } from '../../../providers/EventListProvider';
 import { EventsContext } from '../../../providers/EventsProvider';
 
 function EventDeleteButton() {
-  const { handleEventDelete } = useContext(EventsContext);
+  const { deleteEventFromState } = useContext(EventsContext);
   const { event, isEditMode, resetItemDetails, setEditMode } = useContext(EventListContext);
 
-  const onCancelEdit = () => {
+  const cancelEventEdit = () => {
     if (isEditMode) {
       resetItemDetails();
       setEditMode(false);
     }
   }
 
-  const handleEventDeleteWithConfirmation = async (eventId) => {
+  const deleteEventWithConfirmation = async (eventId) => {
     if (window.confirm('Are you sure you wish to delete this event?')) {
-      await handleEventDelete(eventId);
+      await deleteEventFromState(eventId);
     }
   }
 
   return (
     <button className='del-button' onClick={
       () => isEditMode
-        ? onCancelEdit()
-        : handleEventDeleteWithConfirmation(event.id)
+        ? cancelEventEdit()
+        : deleteEventWithConfirmation(event.id)
     }>
       {isEditMode
         ? <FontAwesomeIcon icon={faXmark} />

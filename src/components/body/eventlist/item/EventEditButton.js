@@ -5,10 +5,10 @@ import { EventListContext } from '../../../providers/EventListProvider';
 import { EventsContext } from '../../../providers/EventsProvider';
 
 function EventEditButton() {
-  const { handleEventUpdate } = useContext(EventsContext);
+  const { updateEventInState } = useContext(EventsContext);
   const { date, event, isEditMode, name, setEditMode } = useContext(EventListContext);
 
-  const onEventEdit = async () => {
+  const editEvent = async () => {
     if (!isEditMode) {
       setEditMode(true);
       return;
@@ -23,12 +23,12 @@ function EventEditButton() {
       name,
       time: date === '' ? null : Date.parse(date),
     };
-    await handleEventUpdate(event, updatedEvent);
+    await updateEventInState(event, updatedEvent);
     setEditMode(false);
   };
 
   return (
-    <button className='edit-button' onClick={() => onEventEdit()}>
+    <button className='edit-button' onClick={editEvent}>
       {isEditMode
         ? <FontAwesomeIcon icon={faCheck} />
         : <FontAwesomeIcon icon={faPenToSquare} />

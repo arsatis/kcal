@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EventsContext } from '../../providers/EventsProvider';
 
 function EventListHeader() {
-  const { canUndo, handleUndo, canRedo, handleRedo } = useContext(EventsContext);
+  const { canUndo, canRedo, undoAction, redoAction } = useContext(EventsContext);
 
   return (
     <div className='event-list-header'>
       <span>Events</span>
-      {canUndo() && <button onClick={() => handleUndo()}><FontAwesomeIcon icon={faUndo} /></button>}
-      {canRedo() && <button onClick={() => handleRedo()}><FontAwesomeIcon icon={faRedo} /></button>}
+      {canUndo() && <button onClick={() => undoAction()}><FontAwesomeIcon icon={faUndo} /></button>}
+      {canRedo() && <button onClick={() => redoAction()}><FontAwesomeIcon icon={faRedo} /></button>}
     </div>
   );
 }

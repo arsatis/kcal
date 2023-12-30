@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
+import { addEventToDb, deleteEventFromDb, getEventsFromDb, updateEventsInDb } from '../utils/eventUtils';
 import { UserContext } from './UserProvider';
 
 function EventsProvider({ children }) {
@@ -8,17 +8,17 @@ function EventsProvider({ children }) {
   const [eventHistory, setEventHistory] = useState([]);
   const [historyIdx, setHistoryIdx] = useState(0);
 
-  const handleEventAdd = async (event) => {
+  const addEventToState = async (event) => {
     const newEvents = [...events, event];
     const newHistoryIdx = historyIdx + 1;
 
     setEvents(newEvents)
     setEventHistory([...eventHistory.slice(0, newHistoryIdx), newEvents]);
     setHistoryIdx(newHistoryIdx);
-    await addEvent(db, user, event);
+    await addEventToDb(db, user, event);
   };
   
-  const handleEventDelete = async (eventId) => {
+  const deleteEventFromState = async (eventId) => {
     const matchedEvents = events.filter((e) => e.id === eventId);
     if (matchedEvents.length === 0) {
       console.error('Event to be deleted does not exist.');
@@ -31,10 +31,10 @@ function EventsProvider({ children }) {
     setEvents(updatedEvents);
     setEventHistory([...eventHistory.slice(0, newHistoryIdx), updatedEvents]);
     setHistoryIdx(newHistoryIdx);
-    await deleteEvent(db, user, event);
+    await deleteEventFromDb(db, user, event);
   };
 
-  const handleEventUpdate = async (oldEvent, newEvent) => {
+  const updateEventInState = async (oldEvent, newEvent) => {
     const eventIdx = events.findIndex((e) => e.id === oldEvent.id);
     const newEvents = [
       ...events.slice(0, eventIdx),
@@ -46,15 +46,19 @@ function EventsProvider({ children }) {
     setEvents(newEvents);
     setEventHistory([...eventHistory.slice(0, newHistoryIdx), newEvents]);
     setHistoryIdx(newHistoryIdx);
-    await deleteEvent(db, user, oldEvent);
-    await addEvent(db, user, newEvent);
+    await deleteEventFromDb(db, user, oldEvent);
+    await addEventToDb(db, user, newEvent);
   };
 
   const canUndo = useCallback(() => {
     return historyIdx > 0;
   }, [historyIdx]);
 
-  const handleUndo = useCallback(async () => {
+  const canRedo = useCallback(() => {
+    return historyIdx < eventHistory.length - 1;
+  }, [eventHistory, historyIdx]);
+
+  const undoAction = useCallback(async () => {
     if (!canUndo()) {
       return;
     }
@@ -63,14 +67,10 @@ function EventsProvider({ children }) {
 
     setEvents(oldEvents);
     setHistoryIdx(newHistoryIdx);
-    await updateEventList(db, user, oldEvents);
+    await updateEventsInDb(db, user, oldEvents);
   }, [db, user, eventHistory, historyIdx, canUndo]);
 
-  const canRedo = useCallback(() => {
-    return historyIdx < eventHistory.length - 1;
-  }, [eventHistory, historyIdx]);
-
-  const handleRedo = useCallback(async () => {
+  const redoAction = useCallback(async () => {
     if (!canRedo()) {
       return;
     }
@@ -79,12 +79,12 @@ function EventsProvider({ children }) {
 
     setEvents(newEvents);
     setHistoryIdx(newHistoryIdx);
-    await updateEventList(db, user, newEvents);
+    await updateEventsInDb(db, user, newEvents);
   }, [db, user, eventHistory, historyIdx, canRedo]);
 
   useEffect(() => {
     const updateEvents = async () => {
-      const events = await getEvents(db, user);
+      const events = await getEventsFromDb(db, user);
       setEvents(events);
       setEventHistory(e => e.length === 0 ? [...e, events] : e);
     }
@@ -98,27 +98,27 @@ function EventsProvider({ children }) {
       
       if (event.ctrlKey || event.metaKey) {
         if (charCode === 'y' || (charCode === 'z' && event.shiftKey)) {
-          await handleRedo();
+          await redoAction();
         } else if (charCode === 'z') {
-          await handleUndo();
+          await undoAction();
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleUndo, handleRedo]);
+  }, [undoAction, redoAction]);
   
   return (
     <EventsContext.Provider value={{
       events,
       setEvents,
-      handleEventAdd,
-      handleEventDelete,
-      handleEventUpdate,
+      addEventToState,
+      deleteEventFromState,
+      updateEventInState,
       canUndo,
-      handleUndo,
       canRedo,
-      handleRedo,
+      undoAction,
+      redoAction,
     }}>
       {children}
     </EventsContext.Provider>
