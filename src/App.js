@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Body from './components/Body';
 import Header from './components/Header';
 import Login from './components/Login';
@@ -12,21 +12,28 @@ function App() {
   return (
     <UserProvider>
       <Routes>
-        <Route path='/kcal' element={isAuthenticated
-          ? <Homepage />
-          : <Login setAuthenticated={setAuthenticated} />
-        } />
+        <Route path='/kcal' element={<Homepage isAuthenticated={isAuthenticated} />} />
         <Route path='/kcal/login' element={<Login setAuthenticated={setAuthenticated} />} />
       </Routes>
     </UserProvider>
   );
 }
 
-function Homepage() {
+function Homepage({ isAuthenticated }) {
+  const navigate = useNavigate();
   const [isEventListVisible, setEventListVisibility] = useState(true);
 
+  useEffect(() => {
+    const goToLogin = async () => {
+      if (!isAuthenticated) {
+        navigate('/kcal/login');
+      }
+    }
+    goToLogin();
+  }, [isAuthenticated, navigate]);
+
   return (
-    <div className='page'>
+    isAuthenticated && <div className='page'>
       <Header
         isEventListVisible={isEventListVisible}
         setEventListVisibility={setEventListVisibility}
