@@ -7,7 +7,7 @@ import { isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
 import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
 
-function Login({ setAuthenticated }) {
+function Login({ setAuth }) {
   const { auth, db, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -23,11 +23,13 @@ function Login({ setAuthenticated }) {
     signInWithEmailAndPassword(auth, _name, password)
       .then(() => {
         setUser(_name);
-        setAuthenticated(true);
+        setAuth(true);
+        localStorage.setItem('user', _name);
+        localStorage.setItem('password', password);
         navigate('/kcal');
       })
       .catch((error) => {
-        alert('An error was encountered during sign in. Please try again.')
+        alert('An error was encountered during sign in. Please try again.');
         console.error(error);
       });
   };
@@ -49,11 +51,13 @@ function Login({ setAuthenticated }) {
       createUserWithEmailAndPassword(auth, _name, password)
         .then(() => {
           setUser(_name);
-          setAuthenticated(true);
+          setAuth(true);
+          localStorage.setItem('user', _name);
+          localStorage.setItem('password', password);
           navigate('/kcal');
         })
         .catch((error) => {
-          alert('An error was encountered during user creation. Please try again.')
+          alert('An error was encountered during user creation. Please try again.');
           console.error(error);
         });
     } catch (e) {
