@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Body from './components/Body';
 import Header from './components/Header';
 import Login from './components/Login';
-import UserProvider from './providers/UserProvider';
+import UserProvider from './components/providers/UserProvider';
 import './App.css'
 
 function App() {

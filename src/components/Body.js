@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import Calendar from './body/Calendar';
 import EventForm from './body/EventForm';
 import EventList from './body/EventList';
-import { UserContext } from '../providers/UserProvider';
+import { UserContext } from './providers/UserProvider';
 import { addEvent, deleteEvent, getEvents, updateEventList } from '../utils/eventUtils';
 
 function Body({ isEventListVisible }) {

@@ -13,7 +13,7 @@ function UserProvider({ children }) {
     storageBucket: 'kcal-arsatis.appspot.com',
     messagingSenderId: '69806283894',
     appId: '1:69806283894:web:c2443945966740e3e31357',
-    measurementId: 'G-0J39BNLT7C'
+    measurementId: 'G-0J39BNLT7C',
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -23,8 +23,8 @@ function UserProvider({ children }) {
     <UserContext.Provider value={{ auth, db, user, setUser }}>
       {children}
     </UserContext.Provider>
-  )
+  );
 }
 
-export const UserContext = createContext();;
+export const UserContext = createContext();
 export default UserProvider;
