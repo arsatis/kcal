@@ -1,6 +1,6 @@
 import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
-export async function getEvents(db, user) {
+export async function getEventsFromDb(db, user) {
   const docRef = doc(db, 'events', user);
   const docSnapshot = await getDoc(docRef);
 
@@ -19,8 +19,8 @@ export async function getEvents(db, user) {
   return [];
 }
 
-export async function addEvent(db, user, event) {
-  const docRef = await validateUserExists(db, user);
+export async function addEventToDb(db, user, event) {
+  const docRef = await checkUserExistsInDb(db, user);
   if (docRef === null) {
     return;
   }
@@ -30,8 +30,8 @@ export async function addEvent(db, user, event) {
   });
 }
 
-export async function deleteEvent(db, user, event) {
-  const docRef = await validateUserExists(db, user);
+export async function deleteEventFromDb(db, user, event) {
+  const docRef = await checkUserExistsInDb(db, user);
   if (docRef === null) {
     return;
   }
@@ -41,8 +41,8 @@ export async function deleteEvent(db, user, event) {
   });
 }
 
-export async function updateEventList(db, user, events) {
-  const docRef = await validateUserExists(db, user);
+export async function updateEventsInDb(db, user, events) {
+  const docRef = await checkUserExistsInDb(db, user);
   if (docRef === null) {
     return;
   }
@@ -52,7 +52,7 @@ export async function updateEventList(db, user, events) {
   });
 }
 
-async function validateUserExists(db, user) {
+async function checkUserExistsInDb(db, user) {
   const docRef = doc(db, 'events', user);
   const docSnapshot = await getDoc(docRef);
 

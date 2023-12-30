@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { EventsContext } from '../providers/EventsProvider';
 
-function EventForm({ onEventAdd }) {
+function EventForm() {
+  const { addEventToState } = useContext(EventsContext);
   const [name, setName] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
-  const handleAddEvent = () => {
+  const addEvent = () => {
     if (name.trim() === '') {
       alert('Event name should not be empty.');
       return;
@@ -12,17 +14,18 @@ function EventForm({ onEventAdd }) {
     
     const newEvent = {
       id: new Date().getTime(),
+      version: 0,
       name,
       time: selectedDate === '' ? null : Date.parse(selectedDate),
     };
-    onEventAdd(newEvent);
+    addEventToState(newEvent);
     setName('');
     setSelectedDate('');
   };
 
   const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
-      handleAddEvent();
+      addEvent();
     }
   };
 
@@ -40,7 +43,7 @@ function EventForm({ onEventAdd }) {
         value={selectedDate}
         onChange={(e) => setSelectedDate(e.target.value)}
       />
-      <button onClick={handleAddEvent}>Add Event</button>
+      <button onClick={addEvent}>Add Event</button>
     </div>
   );
 }
