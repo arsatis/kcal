@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { faCheck, faPenToSquare, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { EventsContext } from '../providers/EventsProvider';
 
-function Event({ event, onEventDelete, onEventUpdate }) {
+function Event({ event }) {
+  const { handleEventDelete, handleEventUpdate } = useContext(EventsContext);
   const [isEditMode, setEditMode] = useState(false);
   const [name, setName] = useState(event.name);
   const [date, setDate] = useState(convertTimestampToDateTime(event.time));
@@ -22,7 +24,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
       name,
       time: date === '' ? null : Date.parse(date),
     };
-    await onEventUpdate(event, updatedEvent);
+    await handleEventUpdate(event, updatedEvent);
     setEditMode(false);
   };
 
@@ -34,9 +36,9 @@ function Event({ event, onEventDelete, onEventUpdate }) {
     }
   }
 
-  const onEventDeleteWithConfirmation = async (eventId) => {
+  const handleEventDeleteWithConfirmation = async (eventId) => {
     if (window.confirm('Are you sure you wish to delete this event?')) {
-      await onEventDelete(eventId);
+      await handleEventDelete(eventId);
     }
   }
 
@@ -73,7 +75,7 @@ function Event({ event, onEventDelete, onEventUpdate }) {
         <button className='del-button' onClick={
           () => isEditMode
             ? onCancelEdit()
-            : onEventDeleteWithConfirmation(event.id)
+            : handleEventDeleteWithConfirmation(event.id)
         }>
           {isEditMode
             ? <FontAwesomeIcon icon={faXmark} />

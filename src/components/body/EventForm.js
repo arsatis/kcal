@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { EventsContext } from '../providers/EventsProvider';
 
-function EventForm({ onEventAdd }) {
+function EventForm() {
+  const { handleEventAdd } = useContext(EventsContext);
   const [name, setName] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -15,7 +17,7 @@ function EventForm({ onEventAdd }) {
       name,
       time: selectedDate === '' ? null : Date.parse(selectedDate),
     };
-    onEventAdd(newEvent);
+    handleEventAdd(newEvent);
     setName('');
     setSelectedDate('');
   };

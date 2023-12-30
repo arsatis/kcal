@@ -12,8 +12,9 @@ function App() {
   return (
     <UserProvider>
       <Routes>
-        <Route path='/kcal' element={
-          isAuthenticated ? <Homepage /> : <Login setAuthenticated={setAuthenticated} />
+        <Route path='/kcal' element={isAuthenticated
+          ? <Homepage />
+          : <Login setAuthenticated={setAuthenticated} />
         } />
         <Route path='/kcal/login' element={<Login setAuthenticated={setAuthenticated} />} />
       </Routes>

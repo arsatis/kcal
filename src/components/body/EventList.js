@@ -1,28 +1,25 @@
-import Event from './Event';
+import { useContext } from 'react';
 import { faRedo, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { EventsContext } from '../providers/EventsProvider';
+import Event from './Event';
 
-function EventList({ events, onEventDelete, onEventUpdate, canUndo, onUndo, canRedo, onRedo }) {
+function EventList() {
+  const { events, canUndo, handleUndo, canRedo, handleRedo } = useContext(EventsContext);
+
   return (
     <div className='event-list'>
       <div className='event-list-header'>
         <span>Events</span>
-        {canUndo() && <button onClick={() => onUndo()}>
+        {canUndo() && <button onClick={() => handleUndo()}>
           <FontAwesomeIcon icon={faUndo} />
         </button>}
-        {canRedo() && <button onClick={() => onRedo()}>
+        {canRedo() && <button onClick={() => handleRedo()}>
           <FontAwesomeIcon icon={faRedo} />
         </button>}
       </div>
       <ul>
-        {events.map((event) => (
-          <Event
-            key={event.id}
-            event={event}
-            onEventDelete={onEventDelete}
-            onEventUpdate={onEventUpdate}
-          />
-        ))}
+        {events.map((e) => <Event key={e.id} event={e} />)}
       </ul>
     </div>
   );
