@@ -14,6 +14,7 @@ function EventForm() {
     
     const newEvent = {
       id: new Date().getTime(),
+      version: 0,
       name,
       time: selectedDate === '' ? null : Date.parse(selectedDate),
     };

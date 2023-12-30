@@ -6,7 +6,7 @@ import { EventsContext } from '../../../providers/EventsProvider';
 
 function EventEditButton() {
   const { updateEventInState } = useContext(EventsContext);
-  const { date, event, isEditMode, name, setEditMode } = useContext(EventListContext);
+  const { date, event, isEditMode, name, setEditMode, version } = useContext(EventListContext);
 
   const editEvent = async () => {
     if (!isEditMode) {
@@ -20,6 +20,7 @@ function EventEditButton() {
 
     const updatedEvent = {
       id: event.id,
+      version: version + 1,
       name,
       time: date === '' ? null : Date.parse(date),
     };
