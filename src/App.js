@@ -1,40 +1,19 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Body from './components/Body';
-import Header from './components/Header';
+import Homepage from './components/Homepage';
+import LoadUserDetails from './components/LoadUserDetails';
 import Login from './components/Login';
-import UserProvider from './components/providers/UserProvider';
+import { UserContext } from './components/providers/UserProvider';
 import './App.css'
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const { jwt } = useContext(UserContext);
   
   return (
-    <UserProvider>
-      <Routes>
-        <Route path='/kcal' element={isAuthenticated
-          ? <Homepage />
-          : <Login setAuthenticated={setAuthenticated} />
-        } />
-        <Route path='/kcal/login' element={<Login setAuthenticated={setAuthenticated} />} />
-      </Routes>
-    </UserProvider>
-  );
-}
-
-function Homepage() {
-  const [isEventListVisible, setEventListVisibility] = useState(true);
-
-  return (
-    <div className='page'>
-      <Header
-        isEventListVisible={isEventListVisible}
-        setEventListVisibility={setEventListVisibility}
-      />
-      <Body
-        isEventListVisible={isEventListVisible}
-      />
-    </div>
+    <Routes>
+      <Route path='/kcal' element={<Homepage />} />
+      <Route path='/kcal/login' element={jwt ? <LoadUserDetails /> : <Login />} />
+    </Routes>
   );
 }
 

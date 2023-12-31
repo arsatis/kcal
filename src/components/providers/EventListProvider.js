@@ -13,16 +13,12 @@ function EventListProvider({ children, event }) {
   }, [event.version, event.time, event.name]);
 
   useEffect(() => {
-    const syncEventDetails = () => {
-      if (isEditMode) {
-        return;
-      }
-      
-      if (version !== getEventVersion(event.version)) {
-        resetItemDetails();
-      }
+    if (isEditMode) {
+      return;
     }
-    syncEventDetails();
+    if (version !== getEventVersion(event.version)) {
+      resetItemDetails();
+    }
   }, [isEditMode, version, event.version, resetItemDetails]);
   
   return (
