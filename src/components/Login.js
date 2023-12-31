@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import sha256 from 'crypto-js/sha256';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { UserContext } from './providers/UserProvider';
-import { isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
-import sha256 from 'crypto-js/sha256';
 import { v4 as randomStr } from 'uuid';
+import { kcalConfig, UserContext } from './providers/UserProvider';
+import { encryptJwt, initializeJwtSystem, isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
 
 function Login() {
   const { auth, db, setAuth, setUser } = useContext(UserContext);
@@ -14,18 +14,31 @@ function Login() {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (!await isLoginValid(db, name, password)) {
+    const jwtAuth = await initializeJwtSystem(auth, db);
+    console.log(jwtAuth);
+
+    let canLogin = false;
+    await signInWithEmailAndPassword(auth, kcalConfig.email, kcalConfig.pw)
+      .then(async () => canLogin = await isLoginValid(db, name, password))
+      .catch((error) => {
+        alert('An error was encountered during sign in. Please try again.');
+        console.error(error);
+      });
+    if (!canLogin) {
       return;
     }
     console.log('User', name, 'has logged in.');
 
     const _name = padUsername(name);
-    signInWithEmailAndPassword(auth, _name, password)
-      .then(() => {
+    await signInWithEmailAndPassword(auth, _name, password)
+      .then(async () => {
+        const jwt = await encryptJwt(
+          { 'user': _name, 'password': password },
+          jwtAuth.secret, jwtAuth.issuer, jwtAuth.audience
+        );
+        localStorage.setItem(jwtAuth.storageKey, jwt);
         setUser(_name);
         setAuth(true);
-        localStorage.setItem('user', _name);
-        localStorage.setItem('password', password);
         navigate('/kcal');
       })
       .catch((error) => {
@@ -35,9 +48,19 @@ function Login() {
   };
 
   const handleSignup = async () => {
-    if (!await isSignUpValid(db, name, password)) {
+    const jwtAuth = await initializeJwtSystem(auth, db);
+
+    let canSignUp = false;
+    await signInWithEmailAndPassword(auth, kcalConfig.email, kcalConfig.pw)
+      .then(async () => canSignUp = await isSignUpValid(db, name, password))
+      .catch((error) => {
+        alert('An error was encountered during sign up. Please try again.');
+        console.error(error);
+      });
+    if (!canSignUp) {
       return;
     }
+
     try {
       const salt = randomStr().substring(0, 8);
       await setDoc(doc(db, 'users', name), {
@@ -49,11 +72,14 @@ function Login() {
 
       const _name = padUsername(name);
       createUserWithEmailAndPassword(auth, _name, password)
-        .then(() => {
+        .then(async () => {
+          const jwt = await encryptJwt(
+            { 'user': _name, 'password': password },
+            jwtAuth.secret, jwtAuth.issuer, jwtAuth.audience
+          );
+          localStorage.setItem(jwtAuth.storageKey, jwt);
           setUser(_name);
           setAuth(true);
-          localStorage.setItem('user', _name);
-          localStorage.setItem('password', password);
           navigate('/kcal');
         })
         .catch((error) => {

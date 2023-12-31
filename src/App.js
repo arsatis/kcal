@@ -7,15 +7,12 @@ import { UserContext } from './components/providers/UserProvider';
 import './App.css'
 
 function App() {
-  const { userInCache, passwordInCache } = useContext(UserContext);
+  const { jwt } = useContext(UserContext);
   
   return (
     <Routes>
       <Route path='/kcal' element={<Homepage />} />
-      <Route path='/kcal/login' element={userInCache && passwordInCache
-        ? <LoadUserDetails />
-        : <Login />
-      } />
+      <Route path='/kcal/login' element={jwt ? <LoadUserDetails /> : <Login />} />
     </Routes>
   );
 }

@@ -1,26 +1,27 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { UserContext } from './providers/UserProvider';
+import { getPayloadFromJwt, signIn } from './utils/loginUtils';
 
 function LoadUserDetails() {
-  const { auth, setAuth, setUser, userInCache, passwordInCache } = useContext(UserContext);
+  const { auth, db, jwt, setAuth, setJwt, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    signInWithEmailAndPassword(auth, userInCache, passwordInCache)
-      .then(() => {
-        setUser(userInCache);
-        setAuth(true);
-        navigate('/kcal');
-      })
-      .catch((error) => {
+    const tmp = async () => {
+      try {
+        const payload = await getPayloadFromJwt(auth, db, jwt);
+        await signIn(auth, payload.user, payload.password, setAuth, setUser, navigate);
+      } catch (e) {
+        setJwt('');
         localStorage.clear();
         alert('An error was encountered when loading user details. Please sign in again.');
-        console.error(error);
-      });
-  });
-  return null;
+        console.error('Error signing in using jwt:', e);
+      }
+    };
+    tmp();
+  }, [auth, db, jwt, navigate, setAuth, setJwt, setUser]);
+  return null; // TODO: add a page asking users to wait while their data is being loaded
 }
 
 export default LoadUserDetails;

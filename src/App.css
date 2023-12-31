@@ -187,7 +187,8 @@ button:hover {
   display: flex;
   flex-direction: column;
   width: 30%;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .event-list-container button {

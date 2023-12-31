@@ -4,18 +4,17 @@ import { signOut } from 'firebase/auth';
 import { UserContext } from '../providers/UserProvider';
 
 function LogoutButton() {
-  const { auth, setAuth, setUser, setUserInCache, setPasswordInCache } = useContext(UserContext);
+  const { auth, setAuth, setJwt, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const logOut = () => {
     if (window.confirm('Are you sure you want to log out?')) {
       signOut(auth)
         .then(() => {
-          setUserInCache('');
-          setPasswordInCache('');
+          localStorage.clear();
+          setJwt('');
           setUser('');
           setAuth(false);
-          localStorage.clear();
           navigate('/kcal/login');
         })
         .catch((error) => {
