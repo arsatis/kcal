@@ -7,7 +7,7 @@ import { v4 as randomStr } from 'uuid';
 import { kcalConfig, UserContext } from './providers/UserProvider';
 import { encryptJwt, initializeJwtSystem, isLoginValid, isSignUpValid, padUsername } from './utils/loginUtils';
 
-function Login() {
+function Login() { // TODO: improve modularization/abstraction
   const { auth, db, setAuth, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -15,16 +15,7 @@ function Login() {
 
   const handleLogin = async () => {
     const jwtAuth = await initializeJwtSystem(auth, db);
-    console.log(jwtAuth);
-
-    let canLogin = false;
-    await signInWithEmailAndPassword(auth, kcalConfig.email, kcalConfig.pw)
-      .then(async () => canLogin = await isLoginValid(db, name, password))
-      .catch((error) => {
-        alert('An error was encountered during sign in. Please try again.');
-        console.error(error);
-      });
-    if (!canLogin) {
+    if (!await isLoginValid(db, name, password)) {
       return;
     }
     console.log('User', name, 'has logged in.');
@@ -36,7 +27,7 @@ function Login() {
           { 'user': _name, 'password': password },
           jwtAuth.secret, jwtAuth.issuer, jwtAuth.audience
         );
-        localStorage.setItem(jwtAuth.storageKey, jwt);
+        localStorage.setItem(kcalConfig.jwtStorageKey, jwt);
         setUser(_name);
         setAuth(true);
         navigate('/kcal');
@@ -49,15 +40,7 @@ function Login() {
 
   const handleSignup = async () => {
     const jwtAuth = await initializeJwtSystem(auth, db);
-
-    let canSignUp = false;
-    await signInWithEmailAndPassword(auth, kcalConfig.email, kcalConfig.pw)
-      .then(async () => canSignUp = await isSignUpValid(db, name, password))
-      .catch((error) => {
-        alert('An error was encountered during sign up. Please try again.');
-        console.error(error);
-      });
-    if (!canSignUp) {
+    if (!await isSignUpValid(db, name, password)) {
       return;
     }
 
@@ -77,7 +60,7 @@ function Login() {
             { 'user': _name, 'password': password },
             jwtAuth.secret, jwtAuth.issuer, jwtAuth.audience
           );
-          localStorage.setItem(jwtAuth.storageKey, jwt);
+          localStorage.setItem(kcalConfig.jwtStorageKey, jwt);
           setUser(_name);
           setAuth(true);
           navigate('/kcal');

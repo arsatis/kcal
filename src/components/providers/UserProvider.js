@@ -6,6 +6,7 @@ import { getFirestore } from 'firebase/firestore';
 export const kcalConfig = {
   email: 'kcal@arsatis.kcal',
   pw: 'kCaL!fF2@(fL*b72Bj&,',
+  jwtStorageKey: 'kcalAuth',
 };
 
 const firebaseConfig = {
@@ -23,8 +24,7 @@ function UserProvider({ children }) {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const jwtStorageKey = 'kcalAuth';
-  const [jwt, setJwt] = useState(localStorage.getItem(jwtStorageKey));
+  const [jwt, setJwt] = useState(localStorage.getItem(kcalConfig.jwtStorageKey));
   const [isAuth, setAuth] = useState(false);
   const [user, setUser] = useState('');
 
